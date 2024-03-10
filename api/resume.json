@@ -1,0 +1,28 @@
+{
+  "theme": "default",
+  "header": {
+    "name": "Ruben Kharel",
+    "display_contact_info": true,
+    "current_title": "fullstack Dev && DevOps",
+    "intro": "I am a Developer and DevOps guy actively developing webs and also a learner, passively learning various nerdy stuff.\n"
+  },
+  "contact": {
+    "email": "resume@rubenk.dev"
+  },
+  "sections": {
+    "experience": true,
+    "education": true,
+    "projects": true,
+    "skills": true,
+    "recognition": true,
+    "associations": false,
+    "interests": true,
+    "links": true,
+    "social_links": false
+  },
+  "social": {
+    "Website": "http://rubenk.dev",
+    "GitHub": "https://github.com/rukh-debug",
+    "LinkedIn": "https://linkedin.com/in/rubenkharel"
+  }
+}

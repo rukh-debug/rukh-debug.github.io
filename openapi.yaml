@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: Portfolio API
+  description: A plugin that allows the user to communicate with Ruben Kharel's portfolio.
+  version: "v1"
+servers:
+  - url: https://rubenk.dev/api
+    description: Production server
+paths:
+  /associations.json:
+    get:
+      summary: Get all associations of Ruben Kharel
+      description: Get all associations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Association'
+  /projects.json:
+    get:
+      summary: Get all projects of Ruben Kharel
+      description: Get all projects
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+  /skills.json:
+    get:
+      summary: Get all skills of Ruben Kharel
+      description: Get all skills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skill'
+  /experience.json:
+    get:
+      summary: Get all experience of Ruben Kharel
+      description: Get all experience
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experience'
+  /education.json:
+    get:
+      summary: Get all education of Ruben Kharel
+      description: Get all education
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Education'
+  /recognitions.json:
+    get:
+      summary: Get all recognitions of Ruben Kharel
+      description: Get all recognitions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recognition'
+  /resume.json:
+    get:
+      summary: Get all resume of Ruben Kharel
+      description: Get all resume
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume'

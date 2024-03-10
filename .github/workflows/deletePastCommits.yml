@@ -1,0 +1,28 @@
+name: Delete Past Commits and Keep Last One
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  delete_past_commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Configure Git user
+      run: |
+        git config --global user.email "talkto@rubenk.dev"
+        git config --global user.name "rukh-debug"
+      
+    - name: Delete past commits and keep the last one
+      run: |
+        git checkout --orphan latest_branch
+        git add -A
+        git commit -m "Init"
+        git branch -D main
+        git branch -m main
+        git push -f origin main

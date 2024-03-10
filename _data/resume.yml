@@ -1,0 +1,31 @@
+theme: default
+header:
+  name: Ruben Kharel
+  # suffix: 
+  display_contact_info: true
+  current_title: fullstack Dev && DevOps
+  intro: >
+    I am a Developer and DevOps guy actively developing webs and also a learner, passively learning various nerdy stuff.
+contact:
+  #address: Kathmandu, Nepal
+  # phone: 980000000
+  email: resume@rubenk.dev
+sections:
+  experience:   true
+  education:    true
+  projects:     true
+  skills:       true
+  recognition:  true
+  associations: false
+  interests:    true
+  links:        true
+  social_links: false
+social:
+  Website:    http://rubenk.dev
+  GitHub:     https://github.com/rukh-debug
+  # Twitter:    https://twitter.com/
+  #Dribbble:  https://dribbble.com/
+  #FaceBook:  https://facebook.com/
+  LinkedIn:   https://linkedin.com/in/rubenkharel
+  #Instagram: https://instagram.com/
+  #Medium:    https://medium.com/

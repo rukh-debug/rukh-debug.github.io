@@ -1,0 +1,75 @@
+Awesome:
+  - name: Awesome-dotnet
+    description: A collection of awesome .NET libraries, tools, frameworks and software
+    link: https://github.com/quozd/awesome-dotnet
+  - name: GPT duck
+    description: "Ask question about any public github repo"
+    link: https://www.gptduck.com/
+  
+code sharing / collaboration:
+  - name: Board
+    description: "Online Whiteboard, alternative link: <https://board.new>"
+    link: https://letsboard.co
+
+  - name: PasteBin
+    description: Share text
+    link: https://pastebin.com
+
+  - name: Asciinema
+    description: Record Shell Session - Appears project is dead, but repo and site upload still works
+    link: https://asciinema.org
+
+networking:
+  - name: Speed test - CloudFlare
+    description: Speed/Latency testing
+    link: https://speed.cloudflare.com
+
+  - name: Speed test - SpeedTest.net
+    description: Speed/Latency testing
+    link: https://www.speedtest.net
+
+  - name: Speed test - Fast.com
+    description: Speed/Latency testing
+    link: https://fast.com
+
+  - name: MXToolbox SuperTool
+    description: MX record, DNS, blacklist and SMTP diagnostics
+    link: https://mxtoolbox.com/SuperTool.aspx
+
+reference:
+  - name: HTTP Status Codes
+    description: Database of HTTP Status Codes with their definitions and helpful code references
+    link: https://httpstatuses.com
+
+misc:
+  - name: Base64 Guru
+    description: Base64 encode/decode
+    link: https://base64.guru
+
+  - name: Coolors
+    description: Color palette generator
+    link: https://coolors.co
+
+  - name: Donat Studios - CSV to Markdown table
+    description: CSV to Markdown Table Generator
+    link: https://donatstudios.com/CsvToMarkdownTable
+
+  - name: One-Time Secret
+    description: Secret Sharing
+    link: https://onetimesecret.com
+
+  - name: JSON Diff
+    description: Sort and Compare JSON
+    link: http://jsondiff.com
+
+  - name: httpbin.org
+    description: Testing HTTP calls/responses
+    link: http://httpbin.org
+
+  - name: KeyCode.info
+    description: Visualizer for JavaScript 'on-key pressed' keycode
+    link: https://keycode.info
+    
+  - name: EmailSpoof Test
+    description: Test the security of your email. All various ways.
+    link: https://emailspooftest.com/

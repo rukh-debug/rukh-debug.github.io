@@ -1,0 +1,15 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Ruben Kharel's Portfolio Site",
+    "name_for_model": "ruben_portfolio",
+    "description_for_human": "A personal portfolio site showcasing Ruben Kharel's skills and projects",
+    "description_for_model": "A website for displaying Ruben Kharel's work and skills",
+    "api": { 
+        "type": "openapi",
+        "url": "https://rubenk.dev/openapi.yaml" 
+    },
+    "auth": { "type": "none" },
+    "logo_url": "https://rubenk.dev/images/logo.png",
+    "legal_info_url": "https://rubenk.dev/legal",
+    "contact_email": "talkto@rubenk.dev"
+    }

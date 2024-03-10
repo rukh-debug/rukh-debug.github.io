@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "summary": "Clean Code by Robert C. Martin is a must-read for developers, providing practical advice and examples to write clear and maintainable code. It's an invaluable guide for those aiming for coding excellence.",
+    "rating": "⭐⭐⭐⭐⭐",
+    "link": "https://a.co/d/iBN6TSt",
+    "completeDate": "2023-10-19"
+  },
+  {
+    "title": "Phython Crash Course",
+    "author": "Eric Matthes",
+    "summary": "Python Crash Course merits a commendable 4/5 stars for its beginner-friendly approach, hands-on exercises, and practical projects. It falls just short of perfection due to a slight lack of depth in advanced topics. Overall, a solid choice for Python learners.",
+    "link": "https://amzn.to/3SeBKKE",
+    "rating": "⭐⭐⭐⭐",
+    "completeDate": "2019-01-01"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "skill": "fullstack Dev && DevOps",
+    "description": "3+ years expertise in full stack development. experienced in DevOps practices for end-to-end delivery of scalable and secure applications."
+  },
+  {
+    "skill": "Linux",
+    "description": "Several years experience with linux system, played with various destros, package manager and settled down finally with Arch & Pacman."
+  },
+  {
+    "skill": "Tools && Tech",
+    "list": [
+      "c#, nodejs/ts, python, kotlin, swift",
+      "sql & nosql",
+      "AWS Services",
+      "docker, Kubernetes",
+      "git/github/gitlab, actions, pipelines",
+      "RESTful API & Postman API testing",
+      "bash scripting",
+      "Vim && vsCode",
+      "linux (Arch, Debian)",
+      "tmux",
+      "security tools (nmap, nc, metasploit, frida, burp etc.)"
+    ]
+  }
+]

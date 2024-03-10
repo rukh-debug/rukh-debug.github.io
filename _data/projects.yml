@@ -1,0 +1,21 @@
+- project: eReKon
+  role: Developer, Open-Source Contributor
+  duration: 2021 &mdash; Present
+  url: "https://github.com/rukh-debug/erekon"
+  description: >
+    eReKon is web recon tool that helps search and scan information related to a website or domain. It mines domain info, gathers subdomains, scrapping and indexing public information, finds website technologies, finds out DNS and WHOIS information, crawls subdomain pages. In a nutshell, it is a single solution to quickly identify public information, find hidden targets, and monitor changes.
+
+- project: talking-pdf
+  role: React Dev, Open-Source Contributor
+  duration: 2023 &mdash; Present
+  url: "https://rubenk.dev/talking-pdf"
+  description: >
+    A simple web app that takes pdf as input and let you talk with it through chat interface. It is built using React, Next.js, and Scss. Powered by OpenAi's GPT-3 API.
+
+- project: vstatus
+  role: Developer
+  duration: 2023 &mdash; Present
+  url: "https://github.com/rukh-debug/vstatus"
+  description: >
+    vstatus is a Visual Studio Code extension that tracks your workspace and file durations, generates insightful activity visualizations, and provides a live status image via an HTTP server. (Initially Intented to be used for github readme page)
+
