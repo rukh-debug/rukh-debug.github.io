@@ -1,0 +1,71 @@
+[Blog]
+title = "Tips to get out of AWS SES sandbox environment."
+description = "If you are struggling with getting access to production environment for AWS SES, then this post might be helpful for you."
+date = "2023-01-24T01:04:03+05:45"
+tags = ["AWS"]
+image = "img/postbanners/awsses.png"
+markdown = """
+# Getting out of AWS SES sandbox environment
+
+If you're working with Amazon Web Services (AWS) Simple Email Service (SES), you may have encountered the limitations of the sandbox environment. This environment restricts your ability to send emails to unverified addresses and limits your sending quota. In this technical guide, we'll walk through the process of requesting access to move out of the sandbox environment and highlight key configurations to ensure a smooth transition.
+
+## Prerequisites
+
+Before we dive in, let's assume you're already familiar with the limited features of AWS SES in the sandbox environment and understand the process of requesting a move out of the sandbox through the AWS support team. The AWS user interface is intuitive, making it easy to navigate and understand.
+
+If you've previously attempted to request access but were rejected, it might be due to insufficient information or missing details in your request. In such cases, you may have received a response from the support team asking for clarification or additional information. A common reply from the support team might look like this:
+
+```
+We reviewed your request and determined that your use of Amazon SES could have a negative impact on our service. We are denying this request to prevent other Amazon SES customers from experiencing interruptions in service.
+```
+
+Our goal is to provide you with the necessary information to make a clear and effective request to the AWS support team, enabling you to access the full features of AWS SES.
+
+## Key Configurations
+
+Before submitting your request, ensure that the following configurations are in place:
+
+1. **DomainKeys Identified Mail (DKIM) configuration**: DKIM is an email authentication technique that allows recipients to verify that an email was indeed sent and authorized by the owner of the domain. It involves adding a digital signature to the email headers. To learn more about DKIM and other related concepts like SPF and DMARC, check out this in-depth article: [What is SPF, DKIM and DMARC?](/2023/05/02/what-is-spf-dkim-dmarc.html)
+
+2. **Custom MAIL FROM domain**: Configure a custom MAIL FROM domain to enhance your email deliverability and branding. This domain is used in the "From" address of your emails and helps establish trust with recipients' email servers.
+
+3. **Email feedback forwarding**: Set up email feedback forwarding using Amazon Simple Notification Service (SNS). This allows you to handle bounce, complaint, and delivery notifications programmatically. Create SNS topics for each type of feedback and configure SES to publish notifications to these topics.
+
+## Crafting Your Request
+
+When you're ready to submit your request to the AWS support team, you'll be asked to provide detailed information about your use case and email sending practices. Here are some sample responses to common questions:
+
+### Use Case Description
+
+```
+Our email subscription and system-notification services are designed to provide users with timely and relevant information. The process begins when a user creates an account on our platform, opts in to receive our email newsletter, and chooses to receive notifications.
+
+We use the service to send important updates and notifications related to the user's account, such as account verification emails, password reset emails, and other critical account-related information. These emails are triggered by specific actions on the platform and are automatically sent to the user's registered email address.
+
+Emails are only sent to users who have explicitly opted in, and each email includes an unsubscribe link that allows users to opt out of future communications if desired. We monitor the delivery and open rates of the sent emails and have implemented HTTP endpoints in our API server to receive bounce and complaint notifications via SNS. All events are stored in our database for further analysis and auditing.
+```
+
+### Recipient Opt-In Process
+
+```
+We take great care to send emails only to individuals who have explicitly requested to receive communications from us. Users can indicate their interest in receiving emails and provide their contact information by completing opt-in forms on our website. Every email we send includes a clear and prominent unsubscribe option, allowing recipients to easily opt out of future emails. Additionally, we comply with all laws and regulations related to sending commercial emails, such as the CAN-SPAM Act in the United States. We respect individuals' privacy and take measures to avoid sending unsolicited emails.
+```
+
+### Bounce and Complaint Handling
+
+```
+We have a well-defined process in place to handle bounce and complaint notifications. If we receive a bounce notification indicating that an email we sent was undeliverable, we immediately flag the corresponding email address as invalid in our contact list and take precautions to avoid sending any further emails to that address. Similarly, if we receive a complaint notification indicating that one of our emails was marked as spam by a recipient, we promptly investigate the issue and make necessary adjustments to ensure our emails adhere to industry best practices and guidelines.
+
+We have implemented HTTP endpoints in our server to capture bounce and complaint notifications, and all events are logged in our database. This allows us to track and monitor these notifications effectively and also alerts our team of administrators to take appropriate actions. Our primary goal is to maintain high deliverability rates and ensure that our communications are well-received by our recipients. We value their feedback and continuously strive to improve the quality and relevance of our emails.
+```
+
+## Conclusion
+
+By providing detailed and technical information about your email sending practices, configurations, and handling of bounce and complaint notifications, you increase the likelihood of a successful request to move out of the AWS SES sandbox environment.
+
+If your request is rejected without a specific reason, don't hesitate to reopen the case and ask for clarification on what additional steps you need to take. Be concise and direct in your communication. In some cases, a senior support member may review your application and find it satisfactory, granting you access to the full features of AWS SES.
+
+Remember to regularly monitor your email sending metrics, maintain proper email hygiene, and promptly address any issues that arise to ensure ongoing compliance with AWS SES guidelines.
+
+We hope this technical guide helps you navigate the process of moving out of the AWS SES sandbox environment. Happy emailing!
+"""

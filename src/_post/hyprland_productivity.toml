@@ -1,0 +1,118 @@
+[Blog]
+layout = "post"
+title = "For the love of Tiling Window Managers (Hyprland)"
+description = "Say goodbye to cluttered screens and hello to smooth sailing"
+date = "2022-01-15T12:30:00+05:45"
+tags = ["Linux"]
+image = "img/postbanners/oss.png"
+markdown = """
+`
+The joy and struggle of linux is found in its freedom. The joy of using what you like. The struggle of finding what that is.`
+
+- u/Own-Cupcake7586
+
+### Journey
+
+I used to jump from one Linux distribution to another, always looking for the perfect desktop. I didn't know much about window managers or desktop environments back then. I tried popular options like GNOME and KDE, but nothing felt quite right.
+
+Then I discovered i3, my first tiling window manager. At first, it was strange. Everything was controlled by keyboard shortcuts, and I had to learn a whole new way of managing windows. It was tough at the beginning, but after a few days, something clicked.
+
+I felt the need of mouse to move around was little to none. Windows automatically organized themselves on the screen, and I could do everything with just the keyboard. It was so much faster and more efficient.
+
+I was amazed by how simple and elegant it was. I was hooked on tiling window managers, and I knew I wouldn't go back. (and i cannot atm, because i find other WM unusable now)
+
+### Tiling Window Manager
+
+https://en.wikipedia.org/wiki/Tiling_window_manager
+
+Wikipedia defines a tiling window manager as a system that organizes windows into non-overlapping frames, unlike the usual way of stacking windows on top of each other. That's exactly what it is, But let's break it down into simpler terms for the less geeky peps. 
+
+Let's look at the below screenshot to give a gist of what it is. 
+
+
+![Dwm-screenshot](https://en.wikipedia.org/wiki/Tiling_window_manager#/media/File:Dwm-screenshot.png)
+
+
+
+### Journy continues on Tiling WM
+
+For many, the journey into the world of tiling window managers begins with the renowned [i3wm](https://i3wm.org/). It's a fantastic option, known for its stability and robust features, especially for those using the [X11 display server](https://www.x.org/wiki/). However, as I got into [Wayland](https://wayland.freedesktop.org/), the search for the perfect tiling companion continued. While [Sway](https://swaywm.org/) presented itself as a compelling alternative with its i3-compatible configuration, my exploration ultimately led me to [Hyprland](https://hyprland.org/).
+
+### ...and now Hyprland
+
+Hyprland caught my eye because it's a really attractive window manager, even without any extra setup. It's exactly what I was looking for: a customizable yet beautiful window manager.
+
+Hyprland is special because it lets you personalize almost everything while still being easy to use and **looking great**. It's similar to other window managers in what it can do, but it stands out because it runs so smoothly. ([not sure if you have nvidia](https://www.youtube.com/watch?v=xPh-5P4XH6o))
+
+
+#### Setup hyprland
+
+[official documentation](https://wiki.hyprland.org/Getting-Started/Installation/) to setup hyprland is here if you happen to try it out.
+
+##### Opening window
+
+To open a new window, press `mod+enter`. This opens a terminal by default, but you can customize it to open any application you want. It's a quick and easy way to launch programs without using the mouse.
+
+##### Moving windows
+
+To move a window, press `mod+shift+arrow keys`. This allows you to quickly rearrange windows on the screen. It's a simple but powerful feature that makes multitasking a breeze.
+
+##### Resizing windows
+
+To resize a window, press `mod+r` to enter resize mode, then use the arrow keys to adjust the size. This is a great way to customize your workspace and make the most of your screen real estate.
+
+##### Changing workspaces
+
+To switch between workspaces, press `mod+number`. This lets you organize your windows into different groups, so you can keep your workflow organized and efficient.
+
+##### Secret workspace
+
+Hyprland has a secret workspace feature that lets you hide windows from view. To activate it, press `mod+shift+s`. This is a handy way to keep your desktop clutter-free and focus on the task at hand.
+
+##### Bindings
+
+Hyprland lets you create custom key bindings to suit your workflow. You can remap keys, create new shortcuts, and customize the window manager to your heart's content. This level of customization is what sets Hyprland apart from other window managers.
+
+### Beyond the Basics
+
+While the basic features of Hyprland are powerful on their own, there's so much more you can do with this window manager. Here are a few advanced features that can take your productivity to the next level:
+
+- **Scripting**: Hyprland supports scripting languages like Python and Lua, allowing you to automate tasks and create custom workflows.
+- **Custom layouts**: You can create custom layouts to organize your windows in unique ways. This is great for multitasking and keeping your workspace tidy.
+- **Integrations**: Hyprland integrates with other tools and applications, allowing you to create a seamless workflow across different programs.
+
+### Conclusion
+
+Hyprland has been a game-changer for me. It's fast, efficient, and beautiful, and it has completely transformed the way I work on my computer. If you're looking to supercharge your productivity and streamline your workflow, I highly recommend giving Hyprland (Or any other tiling window manager) a try.
+
+I encourage you to explore the world of tiling window managers and find what works best for you. It may take some time to
+
+==== Outline ====
+- opening window
+- moving windows
+- resizing windows
+- changing workspaces
+- secret workspace
+- bindings
+
+
+---
+
+Provide a basic overview of the installation process (depending on the user's distro).
+Mention any dependencies or configuration files needed.
+Point to resources like the official documentation or community guides.
+Hyprland in Action:
+
+Showcase your personal Hyprland setup with screenshots or even a short video demonstration.
+Highlight your favorite features and customizations.
+Explain how Hyprland improves your workflow and productivity.
+Beyond the Basics:
+
+Discuss more advanced Hyprland features like scripting, custom layouts, and integrations with other tools.
+Offer tips and tricks for optimizing your Hyprland experience.
+Conclusion:
+
+Summarize your overall experience with Hyprland and why you recommend it.
+Encourage readers to explore the world of tiling window managers and find what works best for them.
+End with a call to action, inviting readers to share their own Hyprland setups or ask questions.
+"""

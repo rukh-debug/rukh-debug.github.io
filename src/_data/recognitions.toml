@@ -1,0 +1,29 @@
+[[recognition]]
+name = "Introduction to Cybersecurity"
+organization = "Cisco"
+year = "Certified 2020"
+summary = """
+<div class="no-print">
+  <div data-iframe-width="150"
+      data-iframe-height="270"
+      data-share-badge-id="4579f516-b5b1-434b-973c-d639c9cb45a3"
+      data-share-badge-host="https://www.credly.com">
+  </div>
+</div>
+<script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+"""
+
+[[recognition]]
+name = "Docker Essentials: A Developer Introduction"
+organization = "IBM"
+year = "Certified 2022"
+summary = """
+<div class="no-print">
+  <div data-iframe-width="150" 
+      data-iframe-height="270"
+      data-share-badge-id="d68decbd-c102-43e9-8a84-d13e082a5598" 
+      data-share-badge-host="https://www.credly.com">
+  </div>
+</div>
+<script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
+"""

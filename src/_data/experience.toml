@@ -1,0 +1,56 @@
+[[experience]]
+company = "Nassec"
+summary = "A young security enthusiast driven company filled with security researchers to provide ultimate security solution for websites and mobile applications."
+logo = "/img/companylogos/nassec.jpg"
+url = "https://www.reconwithme.com/"
+
+[[experience.positions]]
+title = "Security Researcher & Scripting"
+startdate = "2020-10-14"
+enddate = "2021-01-01"
+summary = "Worked on scrapping some security related stuff, developed few mini tools for scanning the web. Strongify my knowledge on OSWAP Top 10"
+projects = ["scrappers", "pentesting", "OSWAP top 10"]
+
+[[experience.positions]]
+title = "Backend Developer"
+startdate = "2021-01-02"
+enddate = "2021-11-31"
+summary = "As a backend developer of a vulnerability scanning tool, I developed RESTful api which scans various tools and technelogy and gather vulnerable informations of the target."
+projects = [
+    "Built API for vulnerability scanning tool, focusing on web app security.",
+    "Managed AWS infrastructure, implemented CI/CD via GitHub Actions and Docker.",
+    "Designed and implemented few projects, exploring different approaches."
+]
+
+[[experience.positions]]
+title = "Project Manager"
+startdate = "2021-12-01"
+enddate = "2022-07-31"
+summary = "Managed technical aspect of the project called ReconwithMe, which was an automated vulnerability scanning and penetration testing tool, developed by security researchers for IT security teams."
+projects = [
+    "Guided the technical team throughout the development process.",
+    "Conducted training sessions for interns, focusing on RESTful API development using Express.js."
+]
+
+[[experience]]
+company = "InnovateTech"
+logo = "/img/companylogos/innovatetech.png"
+url = "https://www.innovatetech.io/"
+
+[[experience.positions]]
+title = "DevOps Intern"
+startdate = "2022-10-01"
+enddate = "2022-12-01"
+summary = "Internship where I gained hands-on experience with Kubernetes, Helm, Docker, and various AWS services. Deployed ASP Core .NET app and an open-source tool with GitLab CI/CD using Docker on AWS EKS with Helm. Explored multiple AWS services."
+
+[[experience]]
+company = "Dharahara Clothings"
+logo = "/img/companylogos/dharahara_clothings.jpg"
+url = "https://www.instagram.com/dharahara_clothings/?hl=en"
+
+[[experience.positions]]
+title = "FullStack Developer"
+startdate = "2023-01-01"
+enddate = "2023-11-01"
+summary = "Led Node.js/MongoDB API development with JWT auth for high-traffic shopping platform. Utilized AWS, CI/CD, and led Next.js/Tailwind CSS for client-side app."
+

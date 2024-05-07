@@ -1,0 +1,139 @@
+[Blog]
+title = "What is SPF, DKIM and DMARC?"
+description = "Let's understand the ABC of email security."
+date = "2023-05-03 04:03:03 +0545"
+tags = ["EmailSecurity"]
+image = "img/postbanners/secure-email.jpg"
+markdown = """
+## Intro
+
+Hey there! Setting up your email service and thinking, "Gee, email authentication sounds like a real snooze fest"? Well, fear not my friend, because I'm here to make it simpler to understand. But before we dive in, let me just say that email authentication is super important for keeping our online communications secure and legit.
+
+There are three key technologies you need to know about (although there are more ways): SPF, DKIM, and DMARC. Don't worry if those acronyms sound like alphabet soup right now - I'll break it down for you. Basically, these tools work together to verify that the emails you send and receive are authentic and not some phishing scam from a cybercriminal.
+
+So, let's cut the chit-chat and get started!
+
+## What the Heck is SPF?
+
+First things first, SPF stands for Sender Policy Framework. And no, it's not about sunscreen, although it does provide protection against harmful rays of a different kind. Specifically, SPF is a way to prevent email spoofing and phishing.
+
+Here's how it works: when an email is sent, the recipient's email server checks the "envelope from" address to see if it matches the "from" address in the message header. If they don't match, it could be a sign of spoofing. To prevent this, the "envelope from" address can be checked against a list of authorized senders stored in the sender's DNS record. This list is called an SPF record, and it contains a list of IP addresses and domain names that are allowed to send email on behalf of the domain in question.
+
+So, let's say you have a domain called example.com, and you want to make sure that only authorized senders can send email from that domain. You would create an SPF record that lists the IP addresses and domain names of your email servers, as well as any third-party services that you use to send email. When an email is received from example.com, the recipient's email server will check the SPF record to make sure that the "envelope from" address matches one of the authorized senders listed in the record. If it doesn't, the email will be flagged as suspicious or rejected altogether.
+
+One thing to keep in mind is that SPF records are an "all or nothing" proposition. In other words, if you have an SPF record that lists only your email servers, any email sent from an IP address or domain name not listed in the record will be rejected. This can be a problem if you use third-party services to send email on your behalf, as those services may have different IP addresses or domain names than your own servers. To prevent this, you'll need to add those third-party services to your SPF record.
+
+### SPF Record Breakdown
+
+Let's take a quick look at an example of an SPF record and a breakdown of its components:
+
+```
+v=spf1 include:_spf.google.com ~all
+```
+
+Let's take a closer look at each part of this record:
+
+- `v=spf1`: This indicates the version of SPF being used. The current version is SPFv1.
+- `include:_spf.google.com`: This specifies that all IP addresses and domain names authorized to send email on behalf of the domain should be obtained from the _spf.google.com record. In other words, if Google is authorized to send email on behalf of the domain, the receiving server will check the _spf.google.com record to verify this.
+- `~all`: This is the result of the SPF check. The tilde (~) indicates that the result is a "soft fail," which means that the receiving server should accept the email, but mark it as potentially suspicious. The `all` keyword indicates the default result if there are no other mechanisms or modifiers in the record. In this case, it means that any IP address or domain name not listed in the record should be treated as a soft fail.
+
+Other possible result options include:
+
+- `-all`: This is a "hard fail," which means that the email should be rejected if the SPF check fails.
+- `+all`: This is a "pass," which means that any IP address or domain name should be allowed to send email on behalf of the domain.
+- `?all`: This is a "neutral," which means that the receiving server should neither accept nor reject the email based on the SPF check.
+
+It's important to note that the order of the mechanisms and modifiers in an SPF record is significant. In general, mechanisms are evaluated in the order they appear, and the result is determined by the first matching mechanism. Modifiers are applied to the result of the last mechanism that matched.
+
+I hope this explanation, example, and breakdown help clarify what SPF is and how to implement it. For more info, check out the references below.
+
+#### References & More
+
+- [Cloudflare explains A-Z of SPF](https://www.cloudflare.com/learning/dns/dns-records/dns-spf-record/)
+
+## DKIM? What's That?
+
+DKIM stands for DomainKeys Identified Mail. It is a method used to add a digital signature to emails, which helps to ensure their integrity and authenticity.
+
+Here's how it works in simple terms:
+
+When you send an email, your email server adds a unique digital signature to the email's header using your domain's private key. This signature can then be verified by the recipient's email server using your domain's public key, which is stored in your domain's DNS records.
+
+If the signature is valid and the email passes other checks (such as SPF and DMARC), the recipient's email server can be confident that the email was actually sent from your domain and that it hasn't been modified in transit.
+
+This helps prevent email spoofing and phishing attacks, where someone pretends to be you and sends emails from your domain in order to trick people into giving up sensitive information.
+
+So, to sum up: DKIM adds a digital signature to emails that helps ensure their authenticity and integrity, preventing email spoofing and phishing attacks.
+
+### DKIM Breakdown
+
+Let's say you're the owner of the domain "example.com" and you want to send an email to someone at "example.org". Here's how DKIM might work in this scenario:
+
+Your email server adds a unique digital signature to the email's header using your domain's private key. The signature might look something like this:
+
+```
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=example.com; s=2022; t=1651565280;
+ bh=mbO26Ycqy8AvcLqopewVz+NvN0nZ/kXKHVLqlu/7i0A=;
+ h=From:To:Subject:Date;
+ b=Lp/YnI+7XZoysbgLd7BhIY1gV7Q2C5ALxV5RL2r5AaJ...
+```
+
+Let's ignore all the stuff in here for the sake of simplicity except `b=Lp/YnI+7XZoysbgLd7BhIY1gV7Q2C5ALxV5RL2r5AaJ...` This is the actual signature value, which is a digital signature of the headers and body of the email.
+
+When the email is received by the recipient's email server, the server looks up your domain's public key in your domain's DNS records. The public key might look something like this:
+
+```
+v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4...
+```
+
+Here's a breakdown of each component of the public key:
+
+- `v=DKIM1`: This specifies the version of the DKIM protocol being used. It should match the version specified in the email's DKIM signature.
+- `k=rsa`: This specifies the type of public key being used. In this case, an RSA key is being used.
+- `p=MIGfMA0GCSqGSIb3DQEBAQUAA4...`: This is the actual public key value, which is used to verify the digital signature on the email.
+
+The recipient's email server uses the public key to verify the digital signature on the email. It does this by recalculating the hash of the email's headers and body using the same hashing algorithm specified in the DKIM signature (in this case, RSA-SHA256), and then comparing the calculated hash to the hash value included in the DKIM signature (the `bh` value).
+
+If the recalculated hash matches the hash value in the DKIM signature, and the signature passes other checks like SPF and DMARC, the recipient's email server can be confident that the email was actually sent from your domain and hasn't been modified in transit.
+
+That's the basic process for how DKIM works to help ensure email authenticity and integrity. By adding a digital signature to your emails using your domain's private key, and then verifying the signature using your domain's public key, you can help prevent email spoofing and phishing attacks.
+
+#### References & More
+
+- [What and how of DKIM?](https://www.mimecast.com/content/dkim)
+- [Why DKIM and each components explained](https://mailtrap.io/blog/dkim/)
+
+## Finally, DMARC
+
+DMARC stands for Domain-based Message Authentication, Reporting and Conformance. Yes, it does sound like a government agency, but it's actually a protocol that helps protect your email from spam and phishing attacks.
+
+In simple terms, DMARC is a way to bring SPF and DKIM together. It checks whether an email message is actually coming from the domain it claims to be from, and whether it has been tampered with in transit.
+
+DMARC works by checking the SPF and DKIM records of an email to ensure they match the sending domain. If they don't match, the email may be rejected or marked as suspicious. This helps prevent spammers from spoofing your domain and sending fraudulent emails to your customers.
+
+DMARC has different policy levels, ranging from "none" to "reject". The "none" policy allows email providers to send reports without actually taking any action. The "quarantine" policy allows email providers to send suspicious emails to the spam folder. And the "reject" policy outright blocks suspicious emails.
+
+### DMARC Record Breakdown
+
+Here's an example DMARC record:
+
+```
+v=DMARC1; p=reject; rua=mailto:dmarc@example.com; fo=1;
+```
+
+Now let's break down each component:
+
+- `v=DMARC1`: This is the DMARC version. At the time of writing, DMARC version 1 is the latest and most widely used version.
+- `p=reject`: This is the DMARC policy. It tells email receivers what to do if a message fails DMARC checks. In this case, the policy is set to "reject", which means that if a message fails DMARC checks, it should be rejected and not delivered.
+- `rua=mailto:dmarc@example.com`: This is the DMARC report URI. It specifies the email address where aggregate reports should be sent. In this case, reports will be sent to "dmarc@example.com" via email.
+- `fo=1`: This is the DMARC failure options. It specifies how failed messages should be handled by the receiving email server. In this case, the option is set to "1", which means that the message should be treated as failed if any of the authentication mechanisms (DKIM or SPF) fail.
+
+There are more components in a DMARC record, which I didn't talk about here just for the sake of simplicity. But you may explore more in detail from the links below.
+
+#### References & More
+
+- [DMARC.org](https://dmarc.org/)
+- [How to implement DMARC](https://docs.sendgrid.com/ui/sending-email/how-to-implement-dmarc)
+- [DMARC rua and ruf](https://dmarcian.com/rua-vs-ruf/)
+"""

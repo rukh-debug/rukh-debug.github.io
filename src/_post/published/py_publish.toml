@@ -1,0 +1,193 @@
+[Blog]
+title = "Python Packaging and Publishing CLI Package with pyproject.toml"
+description = "This blog is focused on step to step guide to package and publish python CLI tool/package with pyproject.toml."
+date = "2023-04-07 11:12:03 +0545"
+tags = ["Python"]
+image = "img/postbanners/python_plus_toml.png"
+markdown = """
+
+# The Plot
+
+Recently I was packaging a CLI tool build on python and I was using `setup.py` to package and publish the package. But I was not happy with the way `setup.py` works. So I started looking for alternatives and I found `pyproject.toml` which is a new standard for packaging python packages. So I decided to give it a try and I was amazed by the simplicity and ease of use of `pyproject.toml`. So I decided to write a blog on it.
+
+# What is pyproject.toml?
+
+`pyproject.toml` is a new standard for packaging python packages. It is a configuration file for python projects. It is a replacement for `setup.py` and `setup.cfg`. It is a standard defined by [PEP 518](https://www.python.org/dev/peps/pep-0518/).
+
+Although `pyproject.toml` is a new standard but it is supported by all the major python packaging tools like `pip`, `setuptools`, `poetry`, `flit`, `build`, etc. So you can use any of the packaging tools to package and publish your python package. But I also want to mention few features are still in beta though.
+
+# Pre-requisites
+
+Before we start, make sure you have the following installed on your system:
+
+- Python ( I have used python 3.10.9 in this blog )
+- pip ( I have used pip 23.0.1 in this blog )
+- ofcourse a python package to package and publish
+
+# Setting up your project
+
+Here is what my project structure looks like:
+
+    .
+    ├── LICENSE
+    ├── README.md
+    ├── pyproject.toml
+    ├── src
+    │   └── mypackage
+    │       ├── __init__.py
+    │       └── cli.py
+    └── tests
+        └── test_mypackage.py
+
+In __init__.py I have added the following code:
+
+```python
+def hello():
+    print("Hello World")
+```
+
+In cli.py I have added the following code:
+
+```python
+import click
+from mypackage import hello
+
+@click.command()
+def main():
+    hello()
+```
+
+in pyproject.toml I have added the following code:
+
+```toml
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helloworld-cli" # name of your package
+version = "0.0.1"
+authors = [
+  { name="Your Name", email="someemail@example.com" },
+]
+description = "A minimal cli printing hello world"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["helloworld", "cli", "python"]
+
+dependencies = [
+  "click>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_PROJECT_NAME" #
+"Bug Tracker" = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_PROJECT_NAME/issues"
+
+[project.scripts]
+helloworld-cli = "mypackage.cli:main"
+```
+
+Here build-system is used to specify the build backend and the build requirements. In this case I am using setuptools as the build backend and wheel as the build requirement. In project section I have specified the name, version, authors, description, readme, license and keywords of my package. The name of the package should be unique on [pypi](https://pypi.org/).
+
+The main part of the pyproject.toml is the scripts section. In this section we specify the entry point of our package. In this case I have specified the entry point as `mypackage.cli:main`. This means that the entry point of my package is `main` function in `cli.py` file in `mypackage` module.
+
+> NOTE: After the package is installed the `main` function will be available as `helloworld-cli` command in the terminal.
+
+Other files are self explanatory and not necessary for this blog.
+
+# Packaging and Publishing
+
+Now that we have our project ready, we can package and publish our package. For this we will use `build` tool and `twine`. `build` tool is used to build the package and `twine` tool is used to publish the package.
+
+## Installing build and twine
+
+To install `build` and `twine` run the following command:
+
+```bash
+pip install build twine
+```
+
+## Building the package
+
+To build the package run the following command:
+
+```bash
+python -m build
+```
+
+This will create a `dist` folder in the root of your project. This folder will contain the built package. In my case it is `helloworld_cli-0.0.1-py3-none-any.whl` and `helloworld-cli-0.0.1.tar.gz`.
+
+### Testing the package locally before publishing
+
+To test the package locally before publishing it, we can install the package using `pip`. To install the package run the following command:
+
+```bash
+pip install dist/helloworld_cli-0.0.1-py3-none-any.whl
+```
+
+or
+
+```bash
+pip install dist/helloworld-cli-0.0.1.tar.gz
+```
+
+Here whl is the wheel package and tar.gz is the source package. You can use either of them to install the package. The reason behind having both the package is that the wheel package is faster to install and the source package is platform independent.
+
+After installing the package, you can run the following command to test the package:
+
+```bash
+helloworld-cli
+```
+
+This should print `Hello World!` in the terminal.
+
+Here is my output
+
+```
+rukh@  √  helloworld-cli
+Hello World!
+
+rukh@  √  which helloworld-cli
+/home/rukh/.local/bin/helloworld-cli
+
+rukh@  √  cat /home/rukh/.local/bin/helloworld-cli
+#!/sbin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from mypackage.cli import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
+
+rukh@  √
+```
+
+As you can see the package is installed and the `main` function is available as `helloworld-cli` command in the terminal.
+
+## Publishing the package
+
+After successfully building the package, we can publish the package. To publish the package we will use `twine`. To publish the package run the following command:
+
+```bash
+twine upload dist/*
+```
+
+This will ask for your pypi username and password. After entering the username and password, the package will be published. Or alternatively you can setup pypirc config file and use that to publish the package. To setup pypirc config file follow the steps mentioned in [this](https://packaging.python.org/en/latest/specifications/pypirc/) link. My `~/.pypirc` file looks like this:
+
+```bash
+[distutils]
+index-servers=pypi
+[pypi]
+repository = https://upload.pypi.org/legacy/
+username =__token__
+password = pypi-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+Here token is the token generated from [pypi](https://pypi.org/). To generate the token follow the steps mentioned in [this](https://pypi.org/help/#apitoken) link. I reccommend using token instead of password for security reasons.
+
+# Conclusion
+
+In this blog we have seen how to package and publish a python package using `pyproject.toml`. We have also seen how to test the package locally before publishing it. pyproject.toml offers a simpler and more intuitive way to package and publish python projects. It's easy to use and is becoming the standard for python packaging. So if you're looking to package and publish your python projects, pyproject.toml is definitely worth considering.
+
+"""

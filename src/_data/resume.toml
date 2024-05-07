@@ -1,0 +1,22 @@
+[header]
+name = "Ruben kharel"
+display_contact_info = true
+current_title = "Fullstack Dev && DevOps"
+intro = "I am a developer and devops guy actively developing webs and also a learner, passively learning various nerdy stuff."
+
+[contact]
+email = "resume@rubenk.dev"
+
+[sections]
+experience = true
+education = true
+projects = true
+skills = true
+recognition = true
+interests = true
+links = true
+
+[social]
+website = "http://rubenk.dev"
+github = "https://github.com/rukh-debug"
+linkedin = "https://linkedin.com/in/rubenkharel"

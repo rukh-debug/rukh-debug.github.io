@@ -1,0 +1,16 @@
+[skill]
+name = "fullstack Dev && DevOps"
+description = "3+ years expertise in full stack development. experienced in DevOps practices for end-to-end delivery of scalable and secure applications."
+
+[skill.ToolsTech]
+languages = ["rust", "c#", "nodejs/ts", "python", "kotlin", "swift"]
+databases = ["sql", "nosql"]
+cloud_services = ["AWS Services"]
+containers = ["docker", "Kubernetes"]
+version_control = ["git/github/gitlab", "actions", "pipelines"]
+api_testing = ["RESTful API", "Postman API testing"]
+scripting = ["bash"]
+editors = ["Vim", "vsCode"]
+os = ["linux (Arch, Debian)"]
+tools = ["tmux"]
+security_tools = ["nmap", "nc", "metasploit", "frida", "burp"]

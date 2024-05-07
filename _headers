@@ -1,0 +1,5 @@
+/*
+Cache-Control: no-cache
+Hello: world
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET
