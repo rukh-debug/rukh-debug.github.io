@@ -1,6 +1,8 @@
 use egui_commonmark::{CommonMarkCache, CommonMarkViewer};
 use include_dir::{include_dir, Dir};
 
+use crate::custom_widgets::{powered_by_egui_and_eframe, footer};
+
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Blogs {
     pub all_blogs: Vec<Blog>,
@@ -130,13 +132,9 @@ impl eframe::App for BlogPage {
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            egui::CollapsingHeader::new("Info").show(ui, |ui| {
-                ui.heading(format!(
-                    "Blog Count: {}",
-                    &self.blogs.all_blogs.len().to_string()
-                ));
-            });
+            footer(ui);
 
+            powered_by_egui_and_eframe(ui);
             // let mut cache = CommonMarkCache::default();
             for blog in &mut self.blogs.all_blogs {
                 egui::Window::new(blog.title.clone())

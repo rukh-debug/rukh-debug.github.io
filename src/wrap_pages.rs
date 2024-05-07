@@ -54,6 +54,7 @@ pub struct WrapPages {
 }
 
 impl WrapPages {
+
     pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         #[allow(unused_mut)]
         let mut slf = Self {
