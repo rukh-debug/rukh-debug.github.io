@@ -1,4 +1,5 @@
 use std::fmt;
+use crate::custom_widgets::organize_items;
 
 #[derive(Default)]
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
@@ -6,6 +7,7 @@ use std::fmt;
 pub struct State {
     resume_page: crate::pages::ResumePage,
     blog_page: crate::pages::BlogPage,
+    playground_page: crate::pages::Playground,
 
     selected_anchor: Anchor,
 }
@@ -15,6 +17,7 @@ pub struct State {
 enum Anchor {
     Blog,
     Resume,
+    Playground
     // Clear,
 }
 
@@ -23,6 +26,19 @@ enum Anchor {
 enum Command {
     Nothing,
 }
+
+
+
+
+//██████╗  ██╗       █████╗  ██╗   ██╗  ██████╗  ██████╗   ██████╗  ██╗   ██╗ ███╗   ██╗ ██████╗ 
+//██╔══██╗ ██║      ██╔══██╗ ╚██╗ ██╔╝ ██╔════╝  ██╔══██╗ ██╔═══██╗ ██║   ██║ ████╗  ██║ ██╔══██╗
+//██████╔╝ ██║      ███████║  ╚████╔╝  ██║  ███╗ ██████╔╝ ██║   ██║ ██║   ██║ ██╔██╗ ██║ ██║  ██║
+//██╔═══╝  ██║      ██╔══██║   ╚██╔╝   ██║   ██║ ██╔══██╗ ██║   ██║ ██║   ██║ ██║╚██╗██║ ██║  ██║
+//██║      ███████╗ ██║  ██║    ██║    ╚██████╔╝ ██║  ██║ ╚██████╔╝ ╚██████╔╝ ██║ ╚████║ ██████╔╝
+//╚═╝      ╚══════╝ ╚═╝  ╚═╝    ╚═╝     ╚═════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═════╝  ╚═╝  ╚═══╝ ╚═════╝ 
+
+
+
 
 impl Anchor {
     #[cfg(target_arch = "wasm32")]
@@ -82,6 +98,11 @@ impl WrapPages {
                 Anchor::Resume,
                 &mut self.state.resume_page as &mut dyn eframe::App,
             ),
+            (
+                "Playground",
+                Anchor::Playground,
+                &mut self.state.playground_page as &mut dyn eframe::App,
+            ),
         ];
 
         vec.into_iter()
@@ -114,6 +135,10 @@ impl WrapPages {
                 }
             }
         }
+
+        ui.separator();
+
+        organize_items(ui);
         self.state.selected_anchor = selected_anchor;
     }
 }
@@ -122,6 +147,7 @@ impl eframe::App for WrapPages {
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         eframe::set_value(storage, eframe::APP_KEY, &self.state.blog_page);
         eframe::set_value(storage, eframe::APP_KEY, &self.state.resume_page);
+        eframe::set_value(storage, eframe::APP_KEY, &self.state.playground_page);
     }
 
     fn clear_color(&self, visuals: &egui::Visuals) -> [f32; 4] {

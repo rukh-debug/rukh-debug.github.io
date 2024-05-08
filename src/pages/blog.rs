@@ -1,7 +1,7 @@
 use egui_commonmark::{CommonMarkCache, CommonMarkViewer};
 use include_dir::{include_dir, Dir};
 
-use crate::custom_widgets::{powered_by_egui_and_eframe, footer};
+use crate::custom_widgets::{powered_by_egui_and_eframe, footer, organize_items};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Blogs {

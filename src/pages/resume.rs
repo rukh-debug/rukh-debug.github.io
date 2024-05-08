@@ -16,7 +16,7 @@ mod interests;
 pub use self::links::Links;
 mod links;
 
-pub use crate::custom_widgets::powered_by_egui_and_eframe;
+pub use crate::custom_widgets::{powered_by_egui_and_eframe, footer, organize_items};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Resume {
@@ -177,9 +177,9 @@ impl eframe::App for ResumePage {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 
         egui::CentralPanel::default().show(ctx, |ui| {
+            footer(ui);
             powered_by_egui_and_eframe(ui);
-            // insert everything inside drag and drop
-            
+
             egui::Window::new(format!(
                 "{} | {}",
                 self.resume.header.name, self.resume.header.current_title
