@@ -29,12 +29,10 @@ pub fn footer(ui: &mut egui::Ui) {
 }
 
 pub fn organize_items(ui: &mut egui::Ui) {
-    // ui.with_layout(egui::Layout::right_to_left(egui::Align::TOP), |ui| {
     if ui.add(egui::Button::new("Tidy up")).clicked() {
         ui.ctx().memory_mut(|mem| mem.reset_areas());
         ui.close_menu();
     }
-    // });
 }
 
 pub fn separator_size(ui: &mut egui::Ui, large: bool) {

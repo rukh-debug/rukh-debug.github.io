@@ -1,15 +1,14 @@
 [[experience]]
 company = "Nassec"
-summary = "A young security enthusiast driven company filled with security researchers to provide ultimate security solution for websites and mobile applications."
-logo = "https://rubenk.dev/companylogos/nassec.jpg"
-url = "https://www.reconwithme.com/"
+logo = "https://rubenk.dev/companylogos/nassec.jpeg"
+url = "https://reconwithme.com"
 
 [[experience.positions]]
-title = "Security Researcher & Scripting"
+title = "Security Researcher & Developer"
 startdate = "2020-10-14"
 enddate = "2021-01-01"
 summary = "Worked on scrapping some security related stuff, developed few mini tools for scanning the web. Strongify my knowledge on OSWAP Top 10"
-projects = ["scrappers", "pentesting", "OSWAP top 10"]
+projects = ["Developed several web scrappers and developed different algorithm to fight different kind of bots which might poses security risk", "Did pentesting on several targets", "Learned OSWAP top 10"]
 
 [[experience.positions]]
 title = "Backend Developer"
@@ -35,7 +34,7 @@ projects = [
 [[experience]]
 company = "InnovateTech"
 logo = "https://rubenk.dev/companylogos/innovatetech.png"
-url = "https://www.innovatetech.io/"
+url = "https://innovatetech.io"
 
 [[experience.positions]]
 title = "DevOps Intern"
@@ -46,7 +45,7 @@ summary = "Internship where I gained hands-on experience with Kubernetes, Helm, 
 [[experience]]
 company = "Dharahara Clothings"
 logo = "https://rubenk.dev/companylogos/dharahara_clothings.jpg"
-url = "https://www.instagram.com/dharahara_clothings/?hl=en"
+url = "https://instagram.com/dharahara_clothings"
 
 [[experience.positions]]
 title = "FullStack Developer"

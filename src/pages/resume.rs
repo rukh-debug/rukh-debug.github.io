@@ -184,7 +184,7 @@ impl eframe::App for ResumePage {
                 .default_open(true)
                 .enabled(true)
                 .show(ctx, |ui| {
-                    egui::ScrollArea::both().show(ui, |ui| {
+                    egui::ScrollArea::vertical().show(ui, |ui| {
                         make_header(ui, &mut self.resume);
 
                         if self.resume.sections.skills {
@@ -193,6 +193,10 @@ impl eframe::App for ResumePage {
                         if self.resume.sections.experience {
                             make_experience(ui, &mut self.resume, ctx);
                         }
+                        if self.resume.sections.recognition {
+                            make_recognition(ui, &mut self.resume);
+                        }
+
                         if self.resume.sections.education {
                             make_education(ui, &mut self.resume)
                         }
@@ -200,9 +204,6 @@ impl eframe::App for ResumePage {
                             make_projects(ui, &mut self.resume);
                         }
 
-                        if self.resume.sections.recognition {
-                            make_recognition(ui, &mut self.resume);
-                        }
                         if self.resume.sections.interests {
                             make_interests(ui, &mut self.resume);
                         }
@@ -253,34 +254,38 @@ fn make_skills(ui: &mut Ui, resume: &mut Resume) {
 
     ui.add_space(10.0);
     ui.label("Tools & Technologies");
-    let stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
+    let stroke: egui::Stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
 
     // TODO: Make this scrollable.
-    egui::ScrollArea::horizontal().show(ui, |ui| {
-        egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
-            egui::Grid::new("skills_grid")
-                .max_col_width(100.0)
-                .min_col_width(20.0)
-                .striped(true)
-                .spacing([10.0, 10.0])
-                .show(ui, |ui| {
-                    for row in 0..resume.skills.tools_tech.len() {
-                        let (catogery, _items) = resume.skills.tools_tech.iter().nth(row).unwrap();
-                        ui.label(catogery);
-                    }
-                    ui.end_row();
+    egui::ScrollArea::horizontal()
+        .id_source("skills_scrollarea")
+        .show(ui, |ui| {
+            egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
+                egui::Grid::new("skills_grid")
+                    .max_col_width(100.0)
+                    .min_col_width(20.0)
+                    .striped(true)
+                    .spacing([10.0, 10.0])
+                    .show(ui, |ui| {
+                        for row in 0..resume.skills.tools_tech.len() {
+                            let (catogery, _items) =
+                                resume.skills.tools_tech.iter().nth(row).unwrap();
+                            ui.label(catogery);
+                        }
+                        ui.end_row();
 
-                    for row in 0..resume.skills.tools_tech.len() {
-                        let (_catogery, items) = resume.skills.tools_tech.iter().nth(row).unwrap();
-                        ui.vertical(|ui| {
-                            for item in items {
-                                ui.label(item);
-                            }
-                        });
-                    }
-                });
+                        for row in 0..resume.skills.tools_tech.len() {
+                            let (_catogery, items) =
+                                resume.skills.tools_tech.iter().nth(row).unwrap();
+                            ui.vertical(|ui| {
+                                for item in items {
+                                    ui.label(item);
+                                }
+                            });
+                        }
+                    });
+            });
         });
-    });
 }
 
 fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
@@ -293,41 +298,25 @@ fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
         install_image_loaders(ctx);
 
         ui.horizontal(|ui| {
-            let image = format!("{}", experience.logo);
-
+            let image = format!("{}", experience.logo); // image url should be provided
             ui.image(image);
-
-            // ui.add(
-            //     egui::Image::new(egui::include_image!(image))
-            //         .max_width(200.0)
-            //         .rounding(10.0),
-            // );
-
             ui.monospace(&experience.company);
-        });
-
-        ui.horizontal(|ui| {
-            ui.add(egui::Label::new(experience.summary.clone()).wrap(true));
             ui.separator();
-            ui.label(experience.url.clone());
+            ui.label(&experience.url);
         });
-        ui.spacing();
+        ui.add_space(10.0);
         for role in &experience.roles {
-            ui.monospace(role.title.clone());
+            ui.monospace(&role.title);
             ui.horizontal(|ui| {
-                ui.label(role.start_date.clone());
+                ui.label(&role.start_date);
                 ui.separator();
-                ui.label(role.end_date.clone());
+                ui.label(&role.end_date);
             });
-            ui.spacing();
-            ui.label(role.summary.clone());
+            wrapped_label(ui, &role.summary);
             for highlight in &role.highlights {
-                ui.label(highlight);
+                wrapped_label(ui, &highlight)
             }
-            // if this is the last iteration dont show the separator
-            if !std::ptr::eq(role, experience.roles.last().unwrap()) {
-                ui.separator();
-            }
+            ui.add_space(5.0);
         }
         // if this is the last iteration dont show the separator
         if !std::ptr::eq(experience, resume.experience.experiences.last().unwrap()) {
@@ -336,7 +325,56 @@ fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
     }
 }
 
+fn make_recognition(ui: &mut Ui, resume: &mut Resume) {
+    ui.add_space(20.0);
+    ui.separator();
+    ui.monospace("Recognition");
+    ui.separator();
+    let stroke: egui::Stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
+
+    egui::ScrollArea::horizontal()
+        .id_source("recognition_scrollArea")
+        .show(ui, |ui| {
+            egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
+                egui::Grid::new("recognition_grid")
+                    .max_col_width(200.0)
+                    .min_col_width(20.0)
+                    .striped(true)
+                    .spacing([10.0, 10.0])
+                    .show(ui, |ui| {
+                        resume
+                            .recognitions
+                            .recognitions
+                            .iter()
+                            .for_each(|recognition| {
+                                ui.vertical(|ui| {
+                                    ui.vertical_centered(|ui| {
+                                        ui.monospace(&recognition.name);
+                                    });
+
+                                    ui.vertical_centered(|ui| {
+                                        ui.horizontal(|ui| {
+                                            ui.label(format!("{}", recognition.organization));
+                                            ui.separator();
+                                            ui.label(format!("{}", recognition.year));
+                                        });
+                                    });
+                                });
+                            });
+                        ui.end_row();
+                        // TODO: Make each badge render as a badge
+                        // on next row
+                    });
+            });
+        });
+}
+
 fn make_education(ui: &mut Ui, resume: &mut Resume) {
+    ui.add_space(20.0);
+    ui.separator();
+    ui.monospace("Education");
+    ui.separator();
+
     for education in &resume.education.educations {
         ui.monospace(format!("{}", education.degree));
         ui.horizontal(|ui| {
@@ -365,26 +403,6 @@ fn make_projects(ui: &mut Ui, resume: &mut Resume) {
         ui.label(format!("{}", project.description));
         // if this is the last iteration dont show the separator
         if !std::ptr::eq(project, resume.projects.projects.last().unwrap()) {
-            ui.separator();
-        }
-    }
-}
-
-fn make_recognition(ui: &mut Ui, resume: &mut Resume) {
-    for recognition in &resume.recognitions.recognitions {
-        ui.monospace(format!("{}", recognition.name));
-        ui.horizontal(|ui| {
-            ui.label(format!("{}", recognition.organization));
-            ui.separator();
-            ui.label(format!("{}", recognition.year));
-        });
-        ui.spacing();
-        ui.label(format!("{}", recognition.summary));
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(
-            recognition,
-            resume.recognitions.recognitions.last().unwrap(),
-        ) {
             ui.separator();
         }
     }

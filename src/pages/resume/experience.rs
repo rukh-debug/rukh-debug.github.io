@@ -16,7 +16,6 @@ pub struct Role {
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Experience {
     pub company: String,
-    pub summary: String,
     pub logo: String,
     pub url: String,
     pub roles: Vec<Role>,
@@ -52,11 +51,6 @@ impl Default for Experiences {
             .map(|x| {
                 let company = x
                     .get("company")
-                    .and_then(|s| s.as_str())
-                    .unwrap_or("")
-                    .to_string();
-                let summary = x
-                    .get("summary")
                     .and_then(|s| s.as_str())
                     .unwrap_or("")
                     .to_string();
@@ -111,7 +105,6 @@ impl Default for Experiences {
 
                 Experience {
                     company,
-                    summary,
                     logo,
                     url,
                     roles,
