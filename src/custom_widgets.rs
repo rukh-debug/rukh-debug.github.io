@@ -30,14 +30,21 @@ pub fn footer(ui: &mut egui::Ui) {
 
 pub fn organize_items(ui: &mut egui::Ui) {
     // ui.with_layout(egui::Layout::right_to_left(egui::Align::TOP), |ui| {
-        if ui
-            .add(
-                egui::Button::new("Tidy up")
-            )
-            .clicked()
-        {
-            ui.ctx().memory_mut(|mem| mem.reset_areas());
-            ui.close_menu();
-        }
+    if ui.add(egui::Button::new("Tidy up")).clicked() {
+        ui.ctx().memory_mut(|mem| mem.reset_areas());
+        ui.close_menu();
+    }
     // });
+}
+
+pub fn separator_size(ui: &mut egui::Ui, large: bool) {
+    if large {
+        ui.add(egui::Separator::spacing(egui::Separator::default(), 20.0));
+    } else {
+        ui.add(egui::Separator::shrink(egui::Separator::default(), 50.0));
+    }
+}
+
+pub fn wrapped_label(ui: &mut egui::Ui, text: &str) {
+    ui.add(egui::Label::new(text).wrap(true));
 }

@@ -16,7 +16,7 @@ mod interests;
 pub use self::links::Links;
 mod links;
 
-pub use crate::custom_widgets::{powered_by_egui_and_eframe, footer, organize_items};
+pub use crate::custom_widgets::{footer, powered_by_egui_and_eframe, wrapped_label};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Resume {
@@ -175,258 +175,223 @@ impl eframe::App for ResumePage {
     }
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-
         egui::CentralPanel::default().show(ctx, |ui| {
             footer(ui);
             powered_by_egui_and_eframe(ui);
 
-            egui::Window::new(format!(
-                "{} | {}",
-                self.resume.header.name, self.resume.header.current_title
-            ))
-            .default_open(true)
-            .enabled(true)
-            .show(ctx, |ui| {
-                // render ui for resume here
-                ui.label(format!("{}", self.resume.header.intro));
-                ui.hyperlink_to("Contact", format!("mailto:{}", self.resume.contact.email));
-            });
+            egui::Window::new("Resume")
+                .default_open(true)
+                .enabled(true)
+                .show(ctx, |ui| {
+                    egui::ScrollArea::both().show(ui, |ui| {
+                        make_header(ui, &mut self.resume);
 
-            if self.resume.sections.experience {
-                egui::Window::new("Experience")
-                    .enabled(true)
-                    .default_open(false)
-                    .show(ctx, |ui| {
-                        for experience in &self.resume.experience.experiences {
-                            ui.monospace(experience.company.clone());
-                            ui.horizontal(|ui| {
-                                ui.label(experience.summary.clone());
-                                ui.separator();
-                                ui.label(experience.url.clone());
-                            });
-                            ui.spacing();
-                            for role in &experience.roles {
-                                ui.monospace(role.title.clone());
-                                ui.horizontal(|ui| {
-                                    ui.label(role.start_date.clone());
-                                    ui.separator();
-                                    ui.label(role.end_date.clone());
-                                });
-                                ui.spacing();
-                                ui.label(role.summary.clone());
-                                for highlight in &role.highlights {
-                                    ui.label(highlight);
-                                }
-                                // if this is the last iteration dont show the separator
-                                if !std::ptr::eq(role, experience.roles.last().unwrap()) {
-                                    ui.separator();
-                                }
-                            }
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(
-                                experience,
-                                self.resume.experience.experiences.last().unwrap(),
-                            ) {
-                                ui.separator();
-                            }
+                        if self.resume.sections.skills {
+                            make_skills(ui, &mut self.resume);
+                        }
+                        if self.resume.sections.experience {
+                            make_experience(ui, &mut self.resume);
+                        }
+                        if self.resume.sections.education {
+                            make_education(ui, &mut self.resume)
+                        }
+                        if self.resume.sections.projects {
+                            make_projects(ui, &mut self.resume);
+                        }
+
+                        if self.resume.sections.recognition {
+                            make_recognition(ui, &mut self.resume);
+                        }
+                        if self.resume.sections.interests {
+                            make_interests(ui, &mut self.resume);
+                        }
+                        if self.resume.sections.links {
+                            make_links(ui, &mut self.resume);
                         }
                     });
-            }
-
-            if self.resume.sections.education {
-                egui::Window::new("Education")
-                    .enabled(true)
-                    .default_open(false)
-                    .show(ctx, |ui| {
-                        for education in &self.resume.education.educations {
-                            ui.monospace(format!("{}", education.degree));
-                            ui.horizontal(|ui| {
-                                ui.label(format!("{}", education.uni));
-                                ui.separator();
-                                ui.label(format!("{}", education.year));
-                            });
-                            ui.spacing();
-                            ui.label(format!("{}", education.summary));
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(
-                                education,
-                                self.resume.education.educations.last().unwrap(),
-                            ) {
-                                ui.separator();
-                            }
-                        }
-                    });
-            }
-
-            if self.resume.sections.projects {
-                egui::Window::new("Projects")
-                    .default_open(false)
-                    .enabled(true)
-                    .show(ctx, |ui| {
-                        for project in &self.resume.projects.projects {
-                            ui.monospace(format!("{}", project.name));
-                            ui.horizontal(|ui| {
-                                ui.label(format!("{}", project.role));
-                                ui.separator();
-                                ui.label(format!("{}", project.duration));
-                            });
-                            ui.spacing();
-                            ui.label(format!("{}", project.description));
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(project, self.resume.projects.projects.last().unwrap())
-                            {
-                                ui.separator();
-                            }
-                        }
-                    });
-            }
-
-            if self.resume.sections.skills {
-                egui::Window::new("Skills")
-                    .default_open(false)
-                    .enabled(true)
-                    .show(ctx, |ui| {
-                        ui.monospace(format!("{}", self.resume.skills.name));
-                        ui.label(format!("{}", self.resume.skills.description));
-                        ui.separator();
-
-                        ui.horizontal(|ui| {
-                            ui.monospace("Languages");
-                            ui.separator();
-                            for language in &self.resume.skills.tools_tech.languages {
-                                ui.label(language);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Databases");
-                            ui.separator();
-                            for database in &self.resume.skills.tools_tech.databases {
-                                ui.label(database);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Cloud Services");
-                            ui.separator();
-                            for cloud_service in &self.resume.skills.tools_tech.cloud_services {
-                                ui.label(cloud_service);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Containers");
-                            ui.separator();
-                            for container in &self.resume.skills.tools_tech.containers {
-                                ui.label(container);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Version Control");
-                            ui.separator();
-                            for version_control in &self.resume.skills.tools_tech.version_control {
-                                ui.label(version_control);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("API Testing");
-                            ui.separator();
-                            for api_testing in &self.resume.skills.tools_tech.api_testing {
-                                ui.label(api_testing);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Scripting");
-                            ui.separator();
-                            for scripting in &self.resume.skills.tools_tech.scripting {
-                                ui.label(scripting);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Editors");
-                            ui.separator();
-                            for editor in &self.resume.skills.tools_tech.editors {
-                                ui.label(editor);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("OS");
-                            ui.separator();
-                            for os in &self.resume.skills.tools_tech.os {
-                                ui.label(os);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Tools");
-                            ui.separator();
-                            for tool in &self.resume.skills.tools_tech.tools {
-                                ui.label(tool);
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.monospace("Security Tools");
-                            ui.separator();
-                            for security_tool in &self.resume.skills.tools_tech.security_tools {
-                                ui.label(security_tool);
-                            }
-                        });
-                    });
-            }
-
-            if self.resume.sections.recognition {
-                egui::Window::new("Recognition")
-                    .enabled(true)
-                    .default_open(false)
-                    .show(ctx, |ui| {
-                        for recognition in &self.resume.recognitions.recognitions {
-                            ui.monospace(format!("{}", recognition.name));
-                            ui.horizontal(|ui| {
-                                ui.label(format!("{}", recognition.organization));
-                                ui.separator();
-                                ui.label(format!("{}", recognition.year));
-                            });
-                            ui.spacing();
-                            ui.label(format!("{}", recognition.summary));
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(
-                                recognition,
-                                self.resume.recognitions.recognitions.last().unwrap(),
-                            ) {
-                                ui.separator();
-                            }
-                        }
-                    });
-            }
-
-            if self.resume.sections.interests {
-                egui::Window::new("Interests")
-                    .enabled(true)
-                    .default_open(false)
-                    .show(ctx, |ui| {
-                        for interest in &self.resume.interests.interests {
-                            ui.label(format!("{}", interest.description));
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(
-                                interest,
-                                self.resume.interests.interests.last().unwrap(),
-                            ) {
-                                ui.separator();
-                            }
-                        }
-                    });
-            }
-
-            if self.resume.sections.links {
-                egui::Window::new("Links")
-                    .default_open(false)
-                    .enabled(true)
-                    .show(ctx, |ui| {
-                        for link in &self.resume.links.links {
-                            ui.hyperlink_to(link.name.clone(), link.url.clone());
-                            // if this is the last iteration dont show the separator
-                            if !std::ptr::eq(link, self.resume.links.links.last().unwrap()) {
-                                ui.separator();
-                            }
-                        }
-                    });
-            }
+                });
         });
+    }
+}
+
+fn make_header(ui: &mut Ui, resume: &mut Resume) {
+    ui.vertical_centered(|ui| {
+        ui.heading(egui::RichText::new(format!("{}", resume.header.name)).size(20.0));
+        ui.hyperlink_to(
+            &resume.contact.email,
+            format!("mailto:{}", resume.contact.email),
+        );
+    });
+
+    ui.separator();
+    // separator_size(ui, true); // separator with larger size / smaller size
+    ui.columns(2, |columns| {
+        columns[0].monospace(format!("{}", resume.header.current_title));
+        columns[1].horizontal(|ui| {
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
+                ui.hyperlink_to("Website", &resume.social.website);
+                ui.separator();
+                ui.hyperlink_to("Github", &resume.social.github);
+                ui.separator();
+                ui.hyperlink_to("LinkedIn", &resume.social.linkedin);
+            });
+        });
+    });
+    ui.separator();
+    wrapped_label(ui, &resume.header.intro);
+}
+
+fn make_skills(ui: &mut Ui, resume: &mut Resume) {
+    ui.add_space(20.0);
+    ui.separator();
+    ui.monospace("Skills");
+    ui.separator();
+
+    ui.label(format!("{}", resume.skills.name));
+    ui.label(format!("{}", resume.skills.description));
+
+    ui.add_space(10.0);
+    ui.label("Tools & Technologies");
+    let stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
+    egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
+        egui::Grid::new("skills_grid")
+            .max_col_width(100.0)
+            .min_col_width(20.0)
+            .striped(true)
+            .spacing([10.0, 10.0])
+            .show(ui, |ui| {
+                for row in 0..resume.skills.tools_tech.len() {
+                    let (catogery, _items) = resume.skills.tools_tech.iter().nth(row).unwrap();
+                    ui.label(catogery);
+                }
+                ui.end_row();
+
+                for row in 0..resume.skills.tools_tech.len() {
+                    let (_catogery, items) = resume.skills.tools_tech.iter().nth(row).unwrap();
+                    ui.vertical(|ui| {
+                        for item in items {
+                            ui.label(item);
+                        }
+                    });
+                }
+            });
+    });
+}
+
+fn make_experience(ui: &mut Ui, resume: &mut Resume) {
+    ui.add_space(20.0);
+    ui.separator();
+    ui.monospace("Experience");
+    ui.separator();
+
+    for experience in &resume.experience.experiences {
+        ui.horizontal(|ui| {
+            ui.add(egui::Image::new(egui::include_image!(
+                "../_data/img/companylogos/nassec.jpg"
+            )).rounding(5.0));
+            ui.monospace(&experience.company);
+        });
+
+        ui.horizontal(|ui| {
+            ui.add(egui::Label::new(experience.summary.clone()).wrap(true));
+            ui.separator();
+            ui.label(experience.url.clone());
+        });
+        ui.spacing();
+        for role in &experience.roles {
+            ui.monospace(role.title.clone());
+            ui.horizontal(|ui| {
+                ui.label(role.start_date.clone());
+                ui.separator();
+                ui.label(role.end_date.clone());
+            });
+            ui.spacing();
+            ui.label(role.summary.clone());
+            for highlight in &role.highlights {
+                ui.label(highlight);
+            }
+            // if this is the last iteration dont show the separator
+            if !std::ptr::eq(role, experience.roles.last().unwrap()) {
+                ui.separator();
+            }
+        }
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(experience, resume.experience.experiences.last().unwrap()) {
+            ui.separator();
+        }
+    }
+}
+
+fn make_education(ui: &mut Ui, resume: &mut Resume) {
+    for education in &resume.education.educations {
+        ui.monospace(format!("{}", education.degree));
+        ui.horizontal(|ui| {
+            ui.label(format!("{}", education.uni));
+            ui.separator();
+            ui.label(format!("{}", education.year));
+        });
+        ui.spacing();
+        ui.label(format!("{}", education.summary));
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(education, resume.education.educations.last().unwrap()) {
+            ui.separator();
+        }
+    }
+}
+
+fn make_projects(ui: &mut Ui, resume: &mut Resume) {
+    for project in &resume.projects.projects {
+        ui.monospace(format!("{}", project.name));
+        ui.horizontal(|ui| {
+            ui.label(format!("{}", project.role));
+            ui.separator();
+            ui.label(format!("{}", project.duration));
+        });
+        ui.spacing();
+        ui.label(format!("{}", project.description));
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(project, resume.projects.projects.last().unwrap()) {
+            ui.separator();
+        }
+    }
+}
+
+fn make_recognition(ui: &mut Ui, resume: &mut Resume) {
+    for recognition in &resume.recognitions.recognitions {
+        ui.monospace(format!("{}", recognition.name));
+        ui.horizontal(|ui| {
+            ui.label(format!("{}", recognition.organization));
+            ui.separator();
+            ui.label(format!("{}", recognition.year));
+        });
+        ui.spacing();
+        ui.label(format!("{}", recognition.summary));
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(
+            recognition,
+            resume.recognitions.recognitions.last().unwrap(),
+        ) {
+            ui.separator();
+        }
+    }
+}
+
+fn make_interests(ui: &mut Ui, resume: &mut Resume) {
+    for interest in &resume.interests.interests {
+        ui.label(format!("{}", interest.description));
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(interest, resume.interests.interests.last().unwrap()) {
+            ui.separator();
+        }
+    }
+}
+
+fn make_links(ui: &mut Ui, resume: &mut Resume) {
+    for link in &resume.links.links {
+        ui.hyperlink_to(link.name.clone(), link.url.clone());
+        // if this is the last iteration dont show the separator
+        if !std::ptr::eq(link, resume.links.links.last().unwrap()) {
+            ui.separator();
+        }
     }
 }
