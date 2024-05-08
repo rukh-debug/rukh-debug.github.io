@@ -1,7 +1,7 @@
 [[experience]]
 company = "Nassec"
 summary = "A young security enthusiast driven company filled with security researchers to provide ultimate security solution for websites and mobile applications."
-logo = "/img/companylogos/nassec.jpg"
+logo = "https://rubenk.dev/companylogos/nassec.jpg"
 url = "https://www.reconwithme.com/"
 
 [[experience.positions]]
@@ -34,7 +34,7 @@ projects = [
 
 [[experience]]
 company = "InnovateTech"
-logo = "/img/companylogos/innovatetech.png"
+logo = "https://rubenk.dev/companylogos/innovatetech.png"
 url = "https://www.innovatetech.io/"
 
 [[experience.positions]]
@@ -45,12 +45,11 @@ summary = "Internship where I gained hands-on experience with Kubernetes, Helm, 
 
 [[experience]]
 company = "Dharahara Clothings"
-logo = "/img/companylogos/dharahara_clothings.jpg"
+logo = "https://rubenk.dev/companylogos/dharahara_clothings.jpg"
 url = "https://www.instagram.com/dharahara_clothings/?hl=en"
 
 [[experience.positions]]
 title = "FullStack Developer"
 startdate = "2023-01-01"
 enddate = "2023-11-01"
-summary = "Led Node.js/MongoDB API development with JWT auth for high-traffic shopping platform. Utilized AWS, CI/CD, and led Next.js/Tailwind CSS for client-side app."
-
+summary = "Developed a ecommerce platform using medusajs and several aws services"

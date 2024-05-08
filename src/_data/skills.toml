@@ -4,6 +4,7 @@ description = "3+ years expertise in full stack development. experienced in DevO
 
 [skill.ToolsTech]
 Languages = ["rust","nodejs/ts", "python", "kotlin", "c#", "swift"]
+"Lib/Frameworks" = ["express", "react", "egui", "many more"]
 Databases = ["postgres", "mongodb", "redis"]
 "Cloud Services" = ["AWS", "GCP", "Azure"]
 Containers = ["Docker", "Kubernetes"]

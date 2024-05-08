@@ -1,4 +1,5 @@
 use egui::Ui;
+use egui_extras::install_image_loaders;
 use toml::Value;
 
 pub use self::skills::Skills;
@@ -190,7 +191,7 @@ impl eframe::App for ResumePage {
                             make_skills(ui, &mut self.resume);
                         }
                         if self.resume.sections.experience {
-                            make_experience(ui, &mut self.resume);
+                            make_experience(ui, &mut self.resume, ctx);
                         }
                         if self.resume.sections.education {
                             make_education(ui, &mut self.resume)
@@ -253,42 +254,55 @@ fn make_skills(ui: &mut Ui, resume: &mut Resume) {
     ui.add_space(10.0);
     ui.label("Tools & Technologies");
     let stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
-    egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
-        egui::Grid::new("skills_grid")
-            .max_col_width(100.0)
-            .min_col_width(20.0)
-            .striped(true)
-            .spacing([10.0, 10.0])
-            .show(ui, |ui| {
-                for row in 0..resume.skills.tools_tech.len() {
-                    let (catogery, _items) = resume.skills.tools_tech.iter().nth(row).unwrap();
-                    ui.label(catogery);
-                }
-                ui.end_row();
 
-                for row in 0..resume.skills.tools_tech.len() {
-                    let (_catogery, items) = resume.skills.tools_tech.iter().nth(row).unwrap();
-                    ui.vertical(|ui| {
-                        for item in items {
-                            ui.label(item);
-                        }
-                    });
-                }
-            });
+    // TODO: Make this scrollable.
+    egui::ScrollArea::horizontal().show(ui, |ui| {
+        egui::Frame::stroke(egui::Frame::default().inner_margin(5.0), stroke).show(ui, |ui| {
+            egui::Grid::new("skills_grid")
+                .max_col_width(100.0)
+                .min_col_width(20.0)
+                .striped(true)
+                .spacing([10.0, 10.0])
+                .show(ui, |ui| {
+                    for row in 0..resume.skills.tools_tech.len() {
+                        let (catogery, _items) = resume.skills.tools_tech.iter().nth(row).unwrap();
+                        ui.label(catogery);
+                    }
+                    ui.end_row();
+
+                    for row in 0..resume.skills.tools_tech.len() {
+                        let (_catogery, items) = resume.skills.tools_tech.iter().nth(row).unwrap();
+                        ui.vertical(|ui| {
+                            for item in items {
+                                ui.label(item);
+                            }
+                        });
+                    }
+                });
+        });
     });
 }
 
-fn make_experience(ui: &mut Ui, resume: &mut Resume) {
+fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
     ui.add_space(20.0);
     ui.separator();
     ui.monospace("Experience");
     ui.separator();
 
     for experience in &resume.experience.experiences {
+        install_image_loaders(ctx);
+
         ui.horizontal(|ui| {
-            ui.add(egui::Image::new(egui::include_image!(
-                "../_data/img/companylogos/nassec.jpg"
-            )).rounding(5.0));
+            let image = format!("{}", experience.logo);
+
+            ui.image(image);
+
+            // ui.add(
+            //     egui::Image::new(egui::include_image!(image))
+            //         .max_width(200.0)
+            //         .rounding(10.0),
+            // );
+
             ui.monospace(&experience.company);
         });
 
