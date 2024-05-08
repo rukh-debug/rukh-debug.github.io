@@ -1,3 +1,7 @@
 ## Blog + Resume (sofar)
 
-- Rewriting in rust & wasm
+- A static blog and resume site 
+
+- wont suggest for webpage usage
+
+
