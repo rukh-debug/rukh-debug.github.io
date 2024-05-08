@@ -17,7 +17,7 @@ mod interests;
 pub use self::links::Links;
 mod links;
 
-pub use crate::custom_widgets::{footer, powered_by_egui_and_eframe, wrapped_label};
+pub use crate::custom_widgets::{footer, powered_by_egui_and_eframe, wrapped_label, resume_section_seperator};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Resume {
@@ -186,7 +186,6 @@ impl eframe::App for ResumePage {
                 .show(ctx, |ui| {
                     egui::ScrollArea::vertical().show(ui, |ui| {
                         make_header(ui, &mut self.resume);
-
                         if self.resume.sections.skills {
                             make_skills(ui, &mut self.resume);
                         }
@@ -196,14 +195,12 @@ impl eframe::App for ResumePage {
                         if self.resume.sections.recognition {
                             make_recognition(ui, &mut self.resume);
                         }
-
                         if self.resume.sections.education {
                             make_education(ui, &mut self.resume)
                         }
                         if self.resume.sections.projects {
                             make_projects(ui, &mut self.resume);
                         }
-
                         if self.resume.sections.interests {
                             make_interests(ui, &mut self.resume);
                         }
@@ -244,10 +241,7 @@ fn make_header(ui: &mut Ui, resume: &mut Resume) {
 }
 
 fn make_skills(ui: &mut Ui, resume: &mut Resume) {
-    ui.add_space(20.0);
-    ui.separator();
-    ui.monospace("Skills");
-    ui.separator();
+    resume_section_seperator(ui, "Skills");
 
     ui.label(format!("{}", resume.skills.name));
     ui.label(format!("{}", resume.skills.description));
@@ -289,14 +283,11 @@ fn make_skills(ui: &mut Ui, resume: &mut Resume) {
 }
 
 fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
-    ui.add_space(20.0);
-    ui.separator();
-    ui.monospace("Experience");
-    ui.separator();
+    resume_section_seperator(ui, "Experience");
 
     for experience in &resume.experience.experiences {
         install_image_loaders(ctx);
-
+        ui.add_space(10.0);
         ui.horizontal(|ui| {
             let image = format!("{}", experience.logo); // image url should be provided
             ui.image(image);
@@ -304,7 +295,7 @@ fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
             ui.separator();
             ui.label(&experience.url);
         });
-        ui.add_space(10.0);
+        ui.add_space(5.0);
         for role in &experience.roles {
             ui.monospace(&role.title);
             ui.horizontal(|ui| {
@@ -316,20 +307,15 @@ fn make_experience(ui: &mut Ui, resume: &mut Resume, ctx: &egui::Context) {
             for highlight in &role.highlights {
                 wrapped_label(ui, &highlight)
             }
-            ui.add_space(5.0);
-        }
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(experience, resume.experience.experiences.last().unwrap()) {
-            ui.separator();
+            ui.add_space(8.0);
         }
     }
 }
 
 fn make_recognition(ui: &mut Ui, resume: &mut Resume) {
-    ui.add_space(20.0);
-    ui.separator();
-    ui.monospace("Recognition");
-    ui.separator();
+    resume_section_seperator(ui, "Recognition");
+
+    ui.add_space(10.0);
     let stroke: egui::Stroke = egui::Stroke::new(1.0, egui::Color32::from_rgb(128, 128, 128));
 
     egui::ScrollArea::horizontal()
@@ -370,12 +356,10 @@ fn make_recognition(ui: &mut Ui, resume: &mut Resume) {
 }
 
 fn make_education(ui: &mut Ui, resume: &mut Resume) {
-    ui.add_space(20.0);
-    ui.separator();
-    ui.monospace("Education");
-    ui.separator();
+    resume_section_seperator(ui, "Education");
 
     for education in &resume.education.educations {
+        ui.add_space(10.0);
         ui.monospace(format!("{}", education.degree));
         ui.horizontal(|ui| {
             ui.label(format!("{}", education.uni));
@@ -384,46 +368,37 @@ fn make_education(ui: &mut Ui, resume: &mut Resume) {
         });
         ui.spacing();
         ui.label(format!("{}", education.summary));
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(education, resume.education.educations.last().unwrap()) {
-            ui.separator();
-        }
     }
 }
 
 fn make_projects(ui: &mut Ui, resume: &mut Resume) {
+    resume_section_seperator(ui, "Projects");
+
     for project in &resume.projects.projects {
         ui.monospace(format!("{}", project.name));
-        ui.horizontal(|ui| {
-            ui.label(format!("{}", project.role));
-            ui.separator();
-            ui.label(format!("{}", project.duration));
-        });
-        ui.spacing();
-        ui.label(format!("{}", project.description));
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(project, resume.projects.projects.last().unwrap()) {
-            ui.separator();
-        }
+        wrapped_label(ui, &project.description);
     }
 }
 
 fn make_interests(ui: &mut Ui, resume: &mut Resume) {
+    resume_section_seperator(ui, "Other Interest");
+    
     for interest in &resume.interests.interests {
-        ui.label(format!("{}", interest.description));
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(interest, resume.interests.interests.last().unwrap()) {
-            ui.separator();
-        }
+        // ui.label(format!("{}", interest.description));
+        wrapped_label(ui, &interest.description)
     }
 }
 
 fn make_links(ui: &mut Ui, resume: &mut Resume) {
-    for link in &resume.links.links {
-        ui.hyperlink_to(link.name.clone(), link.url.clone());
-        // if this is the last iteration dont show the separator
-        if !std::ptr::eq(link, resume.links.links.last().unwrap()) {
-            ui.separator();
+    resume_section_seperator(ui, "Links");
+
+    ui.horizontal(|ui| {
+        for link in &resume.links.links {
+            ui.hyperlink_to(&link.name, &link.url);
+            // if this is the last iteration dont show the separator
+            if !std::ptr::eq(link, resume.links.links.last().unwrap()) {
+                ui.separator();
+            }
         }
-    }
+    });
 }

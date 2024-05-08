@@ -6,18 +6,14 @@ pub struct Projects {
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Project {
     pub name: String,
-    pub role: String,
-    pub duration: String,
     pub url: String,
     pub description: String,
 }
 
 impl Project {
-    fn new(name: String, role: String, duration: String, url: String, description: String) -> Self {
+    fn new(name: String, url: String, description: String) -> Self {
         Project {
             name,
-            role,
-            duration,
             url,
             description,
         }
@@ -39,16 +35,6 @@ impl Default for Projects {
                     .and_then(|s| s.as_str())
                     .unwrap_or("")
                     .to_string();
-                let role = x
-                    .get("role")
-                    .and_then(|s| s.as_str())
-                    .unwrap_or("")
-                    .to_string();
-                let duration = x
-                    .get("duration")
-                    .and_then(|s| s.as_str())
-                    .unwrap_or("")
-                    .to_string();
                 let url = x
                     .get("url")
                     .and_then(|s| s.as_str())
@@ -60,7 +46,7 @@ impl Default for Projects {
                     .unwrap_or("")
                     .to_string();
 
-                Project::new(name, role, duration, url, description)
+                Project::new(name, url, description)
             })
             .collect();
 

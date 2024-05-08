@@ -43,6 +43,13 @@ pub fn separator_size(ui: &mut egui::Ui, large: bool) {
     }
 }
 
+pub fn resume_section_seperator(ui: &mut egui::Ui, title: &str) {
+    ui.add_space(10.0);
+    ui.separator();
+    ui.monospace(title);
+    ui.separator();
+}
+
 pub fn wrapped_label(ui: &mut egui::Ui, text: &str) {
     ui.add(egui::Label::new(text).wrap(true));
 }
