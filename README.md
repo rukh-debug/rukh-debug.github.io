@@ -2,6 +2,6 @@
 
 - A static blog and resume site 
 
-- wont suggest for webpage usage
+- wont suggest for webpage usageexi
 
 

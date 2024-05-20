@@ -1,5 +1,5 @@
-use std::fmt;
 use crate::custom_widgets::organize_items;
+use std::fmt;
 
 #[derive(Default)]
 #[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
@@ -17,8 +17,7 @@ pub struct State {
 enum Anchor {
     Blog,
     Resume,
-    Playground
-    // Clear,
+    Playground, // Clear,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -27,18 +26,12 @@ enum Command {
     Nothing,
 }
 
-
-
-
-//██████╗  ██╗       █████╗  ██╗   ██╗  ██████╗  ██████╗   ██████╗  ██╗   ██╗ ███╗   ██╗ ██████╗ 
+//██████╗  ██╗       █████╗  ██╗   ██╗  ██████╗  ██████╗   ██████╗  ██╗   ██╗ ███╗   ██╗ ██████╗
 //██╔══██╗ ██║      ██╔══██╗ ╚██╗ ██╔╝ ██╔════╝  ██╔══██╗ ██╔═══██╗ ██║   ██║ ████╗  ██║ ██╔══██╗
 //██████╔╝ ██║      ███████║  ╚████╔╝  ██║  ███╗ ██████╔╝ ██║   ██║ ██║   ██║ ██╔██╗ ██║ ██║  ██║
 //██╔═══╝  ██║      ██╔══██║   ╚██╔╝   ██║   ██║ ██╔══██╗ ██║   ██║ ██║   ██║ ██║╚██╗██║ ██║  ██║
 //██║      ███████╗ ██║  ██║    ██║    ╚██████╔╝ ██║  ██║ ╚██████╔╝ ╚██████╔╝ ██║ ╚████║ ██████╔╝
-//╚═╝      ╚══════╝ ╚═╝  ╚═╝    ╚═╝     ╚═════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═════╝  ╚═╝  ╚═══╝ ╚═════╝ 
-
-
-
+//╚═╝      ╚══════╝ ╚═╝  ╚═╝    ╚═╝     ╚═════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═════╝  ╚═╝  ╚═══╝ ╚═════╝
 
 impl Anchor {
     #[cfg(target_arch = "wasm32")]
@@ -70,7 +63,6 @@ pub struct WrapPages {
 }
 
 impl WrapPages {
-
     pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         #[allow(unused_mut)]
         let mut slf = Self {
@@ -183,7 +175,7 @@ impl eframe::App for WrapPages {
             });
         });
 
-        
         self.show_selected_app(ctx, frame);
     }
 }
+

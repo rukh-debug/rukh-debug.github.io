@@ -1,0 +1,185 @@
+[Blog]
+title = "Routing Traffic to Raspberry Pi via VPS and WireGuard: IPTables Setup Notes"
+description = "I wrote some notes while setting up port forwarding for my Raspberry Pi. After facing issues, I used a public VPS and connected my Raspberry Pi to the network with WireGuard. These notes detail the IPTables configuration to route traffic from the VPS to the Raspberry Pi."
+date = "2024-05-15"
+tags = ["iptables", "raspberrypi", "port forwarding", "vps", "wireguard"]
+image = "img/postbanners/python_plus_toml.png"
+markdown = """
+## Routing Traffic from WAN to a Local Network Device using IPTables
+
+This guide details how to route incoming traffic from the WAN to a device in your local network, like a Raspberry Pi, using IPTables. This guide assumes you already have WireGuard set up. If you need to set up WireGuard, follow this guide: [How to Set Up WireGuard VPN on Ubuntu 20.04](https://linuxize.com/post/how-to-set-up-wireguard-vpn-on-ubuntu-20.04/#disqus_thread).
+
+### Check Current IP Routes
+
+To list all current IP routes:
+
+```bash
+ip route list
+```
+
+**Note:** Using `iptables -L` will only show the current IPTables rules, not the system's routing table.
+
+### Save IPTables Rules
+
+To save the current IPTables rules so they persist across reboots:
+
+```bash
+iptables-save > /etc/iptables/rules.v4
+iptables-save > /etc/iptables/rules.v6
+```
+
+**Note:**
+* The `iptables-persistent` package is deprecated, and the `netfilter-persistent` package should be used instead. However, even that is no longer recommended for saving firewall rules.
+* For Ubuntu systems, use the commands above to save the rules to the `/etc/iptables/rules.v4` and `/etc/iptables/rules.v6` files, which are read by the `iptables-restore` command during boot.
+
+### Reload IPTables Rules
+
+To reload saved IPTables rules:
+
+```bash
+iptables-restore < /etc/iptables/rules.v4
+iptables-restore < /etc/iptables/rules.v6
+```
+
+### Allow Incoming DNS Traffic
+
+To allow incoming DNS traffic on UDP port 53:
+
+```bash
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+```
+
+### Configure Forwarding Rules
+
+**For DNS (Port 53):**
+
+Forward DNS traffic from `eth0` to `wg0` and vice versa.
+
+```bash
+# Allow NEW and ESTABLISHED connections from eth0 to wg0
+iptables -A FORWARD -i eth0 -o wg0 -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+# Allow ESTABLISHED connections from wg0 to eth0
+iptables -A FORWARD -i wg0 -o eth0 -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+# Repeat for TCP
+iptables -A FORWARD -i eth0 -o wg0 -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wg0 -o eth0 -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+```
+
+**Explanation:**
+
+* **`-i eth0 -o wg0`**: This specifies the direction of traffic. `-i eth0` means incoming traffic on the `eth0` interface, and `-o wg0` means outgoing traffic on the `wg0` interface.
+* **`-p udp --dport 53`**: Matches UDP packets destined for port 53 (DNS).
+* **`-m conntrack --ctstate NEW,ESTABLISHED`**: This filters traffic based on connection tracking.
+* `NEW` allows new connections to be established.
+* `ESTABLISHED` allows existing connections to continue. This ensures replies to requests are also allowed.
+* **`-j ACCEPT`**: Accepts the matching traffic.
+
+**Important Considerations:**
+
+* **`conntrack`:** Make sure the `conntrack` module is loaded to enable connection tracking.
+* **`iptables-persistent`:** If you are using `iptables-persistent` to save your rules, the package needs to be configured to save these forwarding rules.
+
+### Configure NAT Rules
+
+#### PREROUTING
+
+This chain alters incoming packets. Use `DNAT` (Destination NAT) to change the destination IP address or port.
+
+```bash
+# Redirect incoming DNS traffic on eth0 to wg0
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 10.0.0.3
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 10.0.0.3
+```
+
+**Explanation:**
+
+* **`-t nat`:** Specifies the NAT table.
+* **`-A PREROUTING`:** Adds a rule to the PREROUTING chain.
+* **`-i eth0`**: Specifies the incoming interface.
+* **`-p udp --dport 53`**: Matches UDP packets destined for port 53.
+* **`-j DNAT --to-destination 10.0.0.3`**: Performs DNAT, redirecting traffic to the IP address of your WireGuard interface (`wg0`) on the local network.
+
+#### POSTROUTING
+
+This chain alters outgoing packets. Use `SNAT` (Source NAT) or `MASQUERADE` to change the source IP address.
+
+```bash
+# Allow traffic from wg0 to be correctly routed back through eth0
+iptables -t nat -A POSTROUTING -o eth0 -p udp --dport 53 -j MASQUERADE
+iptables -t nat -A POSTROUTING -o eth0 -p tcp --dport 53 -j MASQUERADE
+```
+
+**Explanation:**
+
+* **`-t nat`:** Specifies the NAT table.
+* **`-A POSTROUTING`:** Adds a rule to the POSTROUTING chain.
+* **`-o eth0`**: Specifies the outgoing interface.
+* **`-j MASQUERADE`**: Uses the `MASQUERADE` target. This dynamically replaces the source IP address with the IP address of the outgoing interface (`eth0`).
+* **`-j SNAT --to-source 10.0.0.1`**: You can use `SNAT` if your WireGuard interface has a static IP address. Replace `10.0.0.1` with the static IP address of your WireGuard interface (`wg0`).
+
+**Important Notes:**
+
+* **`MASQUERADE` vs. `SNAT`:** The `MASQUERADE` target is typically the best choice for dynamically assigned IP addresses. If your WireGuard interface (`wg0`) has a static IP, you can use `SNAT` with the IP address of your `wg0` interface as the source address.
+* **`-d 10.0.0.3/32`**: This is not necessary in the original script but was included for clarity. The `-d` flag filters based on the destination IP address, so you could specify the IP address of your WireGuard interface on the local network.
+
+### Complete Script
+
+```bash
+# Allow incoming DNS traffic on UDP port 53
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+
+# Forward DNS traffic between eth0 and wg0
+iptables -A FORWARD -i eth0 -o wg0 -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wg0 -o eth0 -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth0 -o wg0 -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wg0 -o eth0 -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+# PREROUTING rules for DNS traffic
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 10.0.0.3
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 10.0.0.3
+
+# POSTROUTING rules for DNS traffic
+iptables -t nat -A POSTROUTING -o eth0 -p udp --dport 53 -j MASQUERADE
+iptables -t nat -A POSTROUTING -o eth0 -p tcp --dport 53 -j MASQUERADE
+```
+
+**Remember to:**
+
+* Replace `eth0` with your actual WAN interface name.
+* Replace `wg0` with the name of your WireGuard interface.
+* Replace `10.0.0.3` with the actual IP address of your `wg0` interface on your local network.
+
+### Revert
+
+To revert the forwarding configuration, for example, for port 53:
+
+```bash
+# Delete PREROUTING rules
+iptables -t nat -D PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 10.0.0.3
+iptables -t nat -D PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 10.0.0.3
+
+# Delete POSTROUTING rules
+iptables -t nat -D POSTROUTING -o eth0 -p tcp --dport 53 -j MASQUERADE
+iptables -t nat -D POSTROUTING -o eth0 -p udp --dport 53 -j MASQUERADE
+
+# Delete FORWARD rules
+iptables -D FORWARD -i eth0 -o wg0 -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -D FORWARD -i wg0 -o eth0 -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -D FORWARD -i eth0 -o wg0 -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -D FORWARD -i wg0 -o eth0 -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+```
+
+These commands will remove the rules for forwarding port 53 traffic.
+
+**Additional Tips:**
+
+* **`iptables-save` and `iptables-restore`:** Use these commands to save and reload your firewall rules so that they are persistent across reboots.
+* **`iptables -L`**: Use this command to list the current IPTables rules.
+* **`iptables -t nat -L`**: Use this command to list the current NAT rules.
+* **`ip route list`**: Use this command to list the current routing table.
+* **`ip rule list`**: Use this command to list the routing rules.
+
+By following these steps, you can configure IPTables to route traffic from the WAN to a specific device within your local network, ensuring proper handling of both inbound and outbound traffic.
+"""
