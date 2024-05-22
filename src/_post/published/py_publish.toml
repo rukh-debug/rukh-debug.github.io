@@ -2,6 +2,7 @@
 title = "Python Packaging and Publishing CLI Package with pyproject.toml"
 description = "This blog is focused on step to step guide to package and publish python CLI tool/package with pyproject.toml."
 date = "2023-04-07 11:12:03 +0545"
+slug = "python-packaging-and-publishing-cli-package-with-pyproject"
 tags = ["Python"]
 image = "img/postbanners/python_plus_toml.png"
 markdown = """

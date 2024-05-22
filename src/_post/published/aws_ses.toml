@@ -3,6 +3,7 @@ title = "Tips to get out of AWS SES sandbox environment."
 description = "If you are struggling with getting access to production environment for AWS SES, then this post might be helpful for you."
 date = "2023-01-24T01:04:03+05:45"
 tags = ["AWS"]
+slug = "tips-to-get-out-of-aws-ses-sandbox-environment"
 image = "img/postbanners/awsses.png"
 markdown = """
 # Getting out of AWS SES sandbox environment

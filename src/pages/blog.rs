@@ -1,7 +1,9 @@
+use std::fmt::format;
+
 use egui_commonmark::{CommonMarkCache, CommonMarkViewer};
 use include_dir::{include_dir, Dir};
 
-use crate::custom_widgets::{powered_by_egui_and_eframe, footer};
+use crate::custom_widgets::{footer, powered_by_egui_and_eframe};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Blogs {
@@ -17,6 +19,7 @@ pub struct Blog {
     pub tags: Vec<String>,
     pub markdown: String,
     pub show_full: bool,
+    pub slug: String,
 }
 
 impl Blog {
@@ -27,6 +30,7 @@ impl Blog {
         description: String,
         tags: Vec<String>,
         markdown: String,
+        slug: String,
     ) -> Self {
         Blog {
             title,
@@ -36,6 +40,7 @@ impl Blog {
             tags,
             markdown,
             show_full: false,
+            slug,
         }
     }
 }
@@ -65,6 +70,7 @@ impl Default for Blogs {
 
             let blog_item = blog_toml["Blog"].as_table().unwrap();
             let title = blog_item["title"].as_str().unwrap().to_string();
+            let slug = blog_item["slug"].as_str().unwrap().to_string();
             let date = blog_item["date"].as_str().unwrap().to_string();
             let image = blog_item["image"].as_str().unwrap().to_string();
             let description = blog_item["description"].as_str().unwrap().to_string();
@@ -76,7 +82,7 @@ impl Default for Blogs {
                 .collect();
             let markdown = blog_item["markdown"].as_str().unwrap().to_string();
 
-            let blog = Blog::new(title, date, image, description, tags, markdown);
+            let blog = Blog::new(title, date, image, description, tags, markdown, slug);
             blogs.all_blogs.push(blog);
         });
         blogs
@@ -130,13 +136,24 @@ impl eframe::App for BlogPage {
         eframe::set_value(storage, eframe::APP_KEY, self);
     }
 
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             footer(ui);
 
             powered_by_egui_and_eframe(ui);
-            // let mut cache = CommonMarkCache::default();
+
             for blog in &mut self.blogs.all_blogs {
+                #[cfg(target_arch = "wasm32")]
+                if let Some(slug) = frame.info().web_info.location.hash.strip_prefix('#') {
+                    let parts: Vec<&str> = slug.split("/").collect();
+
+                    if parts.len() == 2 && parts[0] == "Blog" {
+                        if parts[1] == blog.slug {
+                            blog.show_full = true;
+                        }
+                    }
+                }
+
                 egui::Window::new(blog.title.clone())
                     .enabled(true)
                     .collapsible(true)
@@ -154,6 +171,7 @@ impl eframe::App for BlogPage {
                         if &blog.show_full == &true {
                             if ui.button("Collapse").clicked() {
                                 blog.show_full = false;
+                                ui.ctx().open_url(egui::OpenUrl::same_tab(format!("#Blog")));
                             }
                             egui::ScrollArea::vertical().show(ui, |ui| {
                                 CommonMarkViewer::new(blog.title.clone()).show(
@@ -165,6 +183,10 @@ impl eframe::App for BlogPage {
                         } else {
                             if ui.button("Read More").clicked() {
                                 blog.show_full = true;
+                                ui.ctx().open_url(egui::OpenUrl::same_tab(format!(
+                                    "#Blog/{}",
+                                    blog.slug
+                                )));
                             }
                         }
                     });

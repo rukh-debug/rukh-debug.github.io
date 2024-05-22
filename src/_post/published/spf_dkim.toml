@@ -1,6 +1,7 @@
 [Blog]
 title = "What is SPF, DKIM and DMARC?"
 description = "Let's understand the ABC of email security."
+slug = "what-is-spf-dkim-dmarc"
 date = "2023-05-03 04:03:03 +0545"
 tags = ["EmailSecurity"]
 image = "img/postbanners/secure-email.jpg"

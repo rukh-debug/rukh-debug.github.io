@@ -1,11 +1,3 @@
-[Blog]
-layout = "post"
-title = "For the love of Tiling Window Managers (Hyprland)"
-description = "Say goodbye to cluttered screens and hello to smooth sailing. Might be a flex post"
-date = "2022-01-15T12:30:00+05:45"
-tags = ["Linux"]
-image = "img/postbanners/oss.png"
-markdown = """
 `
 The joy and struggle of linux is found in its freedom. The joy of using what you like. The struggle of finding what that is.`
 
@@ -84,4 +76,3 @@ While the basic features of Hyprland are powerful on their own, there's so much 
 Hyprland has been a game-changer for me. It's fast, efficient, and beautiful, and it has completely transformed the way I work on my computer. If you're looking to supercharge your productivity and streamline your workflow, I highly recommend giving Hyprland (Or any other tiling window manager) a try.
 
 I encourage you to explore the world of tiling window managers and find what works best for you. It may take some time to
-"""

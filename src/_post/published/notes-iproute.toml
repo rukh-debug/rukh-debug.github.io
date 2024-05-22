@@ -3,6 +3,7 @@ title = "Routing Traffic to Raspberry Pi via VPS and WireGuard: IPTables Setup N
 description = "I wrote some notes while setting up port forwarding for my Raspberry Pi. After facing issues, I used a public VPS and connected my Raspberry Pi to the network with WireGuard. These notes detail the IPTables configuration to route traffic from the VPS to the Raspberry Pi."
 date = "2024-05-15"
 tags = ["iptables", "raspberrypi", "port forwarding", "vps", "wireguard"]
+slug = "routing-traffic-to-raspberrypi-via-vps-wireguard-iptable-setup-notes"
 image = "img/postbanners/python_plus_toml.png"
 markdown = """
 ## Routing Traffic from WAN to a Local Network Device using IPTables
