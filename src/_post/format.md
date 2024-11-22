@@ -1,11 +1,3 @@
-[Blog]
-title = "Apps that keeps me sane"
-date = "2022-01-15T12:30:00+05:45"
-slug = "apps-that-keeps-me-sane"
-image = "img/postbanners/oss.png"
-description = "The list of apps and softwares I use."
-tags = ["Opensource"]
-markdown = """
 I am a huge believer and supporter of opensource community. As it offers the freedom of customization of the software, access to a wide range of resource and support from the community, the opportunity to collaborate with other users, and the chance to contribute to the development of something great. The opensource community also allows users to experiment with their software without the fear of being locked into expensive licensing fees.
 
 I used opensource tool as much as I can. So here are various day to day opensource softwares and applications I use on my day to day life.
@@ -94,5 +86,3 @@ I used opensource tool as much as I can. So here are various day to day opensour
 | [DuckDuckGo](https://f-droid.org/en/packages/com.duckduckgo.mobile.android/)                  | Privacy, simplified                                             | Browser           |
 | [Paxful](https://play.google.com/store/apps/details?id=com.paxful.wallet)                     | Trade crypto                                                    | Finance           |
 | [Seal](https://f-droid.org/en/packages/com.junkfood.seal/)                                    | yt-dlp in an app                                                | Utilities         |
-
-"""
