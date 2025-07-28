@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruben K - DevOps</title>
+    <title>Ruben K - Web Developer & Infrastructure Enthusiast</title>
 
     <style>
         body {
-            background-color: #121212; 
-            color: #e0e0e0; 
+            background-color: #121212;
+            color: #e0e0e0;
             
             font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
             
-            font-size: 16px; 
-            font-weight: 400; 
-            line-height: 1.7; 
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.7;
             
             /* Center the content */
-            max-width: 70ch; 
-            margin: 0 auto; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            cursor: none;
+        }
+
+        .content-wrapper {
+            max-width: 70ch;
             padding: 4rem 2rem;
         }
 
@@ -45,9 +53,10 @@
         }
 
         a {
-            color: #e0e0e0; 
+            color: #e0e0e0;
             text-decoration: underline;
-            text-decoration-style: dashed; 
+            text-decoration-style: dashed;
+            cursor: none;
         }
 
         a:hover {
@@ -59,12 +68,38 @@
             color: #f5f5f5;
         }
 
+        #custom-cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition:
+                width 0.2s ease-in-out,
+                height 0.2s ease-in-out,
+                background-color 0.2s ease-in-out,
+                transform 0.1s ease;
+            z-index: 9999;
+        }
+
+        #custom-cursor.hovering {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(224, 224, 224, 0.1);
+        }
+
+        #custom-cursor.clicking {
+            transform: translate(-50%, -50%) scale(0.9);
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Ruben K.</h1>
+    <div class="content-wrapper">
+        <h1>Ruben K.</h1>
     <p>Web Developer & Infrastructure Enthusiast</p>
 
     <hr>
@@ -84,5 +119,34 @@
     <p>
         Find my work on <a href="https://github.com/rukh-debug">GitHub</a>, connect with me on <a href="https://matrix.to/#/@rukh-:matrix.org">@rukh-:matrix.org</a>, or read my thoughts on <a href="https://blog.rubenk.dev">my blog</a>.
     </p>
+    </div>
+    <div id="custom-cursor"></div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        const links = document.querySelectorAll('a');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('clicking');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('clicking');
+        });
+
+        links.forEach((link) => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('hovering');
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovering');
+            });
+        });
+    </script>
 </body>
 </html>
