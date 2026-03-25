@@ -3,150 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruben K - Web Developer & Infrastructure Enthusiast</title>
+    <title>rukh</title>
+    <meta name="description" content="Ruben K. DevOps, automation, and building things that work.">
 
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.7;
-            
-            /* Center the content */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            background: #0a0a0a;
+            color: #b0b0b0;
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+            font-size: 15px;
+            line-height: 1.8;
             cursor: none;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .content-wrapper {
-            max-width: 70ch;
-            padding: 4rem 2rem;
+        ::selection {
+            background: #333;
+            color: #fff;
         }
 
-
-        h1 {
-            font-size: 2.5rem; 
-            font-weight: 700; 
-            color: #ffffff; 
-            margin-bottom: 0; 
-            letter-spacing: -1px;
+        .page {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 6rem 2rem 8rem;
         }
 
-        h1 + p {
-            font-size: 1.25rem;
-            font-weight: 300; 
-            color: #a0a0a0; 
-            margin-top: 0.25rem;
+        .name {
+            font-size: 1.1rem;
+            color: #e8e8e8;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        hr {
+        .tagline {
+            color: #555;
+            margin-top: 0.2rem;
+            font-size: 0.85rem;
+        }
+
+        .sep {
             border: none;
-            border-top: 1px solid #333333;
-            margin: 3rem 0; /* Lots of space around the divider */
+            border-top: 1px solid #1a1a1a;
+            margin: 2.5rem 0;
         }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            margin-bottom: 1rem;
+        }
+
+        p { margin-bottom: 1rem; }
+        p:last-child { margin-bottom: 0; }
+
+        .dim { color: #555; }
+        .bright { color: #d4d4d4; }
 
         a {
-            color: #e0e0e0;
-            text-decoration: underline;
-            text-decoration-style: dashed;
+            color: #b0b0b0;
+            text-decoration: none;
+            border-bottom: 1px solid #2a2a2a;
+            transition: border-color 0.2s, color 0.2s;
             cursor: none;
         }
 
         a:hover {
-            text-decoration-style: solid; 
+            color: #e8e8e8;
+            border-color: #555;
         }
 
-        strong {
-            font-weight: 600;
-            color: #f5f5f5;
+        .projects {
+            list-style: none;
+            padding: 0;
         }
 
-        #custom-cursor {
+        .projects li {
+            margin-bottom: 1.4rem;
+        }
+
+        .project-name {
+            color: #d4d4d4;
+            font-weight: 500;
+        }
+
+        .project-desc {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 0.15rem;
+        }
+
+        .project-meta {
+            color: #3a3a3a;
+            font-size: 0.75rem;
+            margin-top: 0.15rem;
+        }
+
+        .project-private {
+            color: #3a3a3a;
+            font-size: 0.72rem;
+            font-style: italic;
+        }
+
+        .links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+
+        .links a {
+            font-size: 0.85rem;
+        }
+
+        .stack-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.3rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stack-key {
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .stack-val {
+            color: #999;
+        }
+
+        .note {
+            color: #444;
+            font-size: 0.82rem;
+            font-style: italic;
+        }
+
+        .private-note {
+            color: #3a3a3a;
+            font-size: 0.78rem;
+            font-style: italic;
+            margin-top: 1.2rem;
+        }
+
+        /* catch-all email */
+        .email-catch-all {
+            font-size: 0.85rem;
+            color: #b0b0b0;
+            border-bottom: 1px solid #2a2a2a;
+            cursor: none;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .email-catch-all:hover {
+            color: #e8e8e8;
+            border-color: #555;
+        }
+
+        .email-dynamic {
+            color: #d4d4d4;
+            position: relative;
+        }
+
+        .email-dynamic::after {
+            content: '|';
+            animation: blink 0.7s step-end infinite;
+            color: #555;
+            margin-left: 1px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .email-static {
+            color: #666;
+        }
+
+        @media (max-width: 500px) {
+            .page { padding: 3rem 1.2rem 5rem; }
+            .stack-grid { grid-template-columns: 1fr; gap: 0.1rem; }
+            .stack-key { margin-top: 0.5rem; }
+            .links { gap: 1rem; }
+        }
+
+        /* cursor */
+        #cursor {
             position: fixed;
-            width: 24px;
-            height: 24px;
-            border: 1px solid #e0e0e0;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #333;
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            transition:
-                width 0.2s ease-in-out,
-                height 0.2s ease-in-out,
-                background-color 0.2s ease-in-out,
-                transform 0.1s ease;
+            transition: width 0.15s, height 0.15s, background 0.15s, border-color 0.15s;
             z-index: 9999;
         }
 
-        #custom-cursor.hovering {
-            width: 48px;
-            height: 48px;
-            background-color: rgba(224, 224, 224, 0.1);
+        #cursor.hover {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-color: #555;
         }
 
-        #custom-cursor.clicking {
-            transform: translate(-50%, -50%) scale(0.9);
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            a { cursor: pointer; }
+            .email-catch-all { cursor: pointer; }
+            #cursor { display: none; }
         }
     </style>
 </head>
 
 <body>
+    <div class="page">
 
-    <div class="content-wrapper">
-        <h1>Ruben K.</h1>
-    <p>Web Developer & Infrastructure Enthusiast</p>
+        <div class="name">Ruben K.</div>
+        <div class="tagline">i build things, break things, and automate the rest</div>
 
-    <hr>
+        <hr class="sep">
 
-    <p>
-        I'm a developer who builds, automates, and secures my own infrastructure.
-    </p>
+        <div class="section-label">now</div>
+        <p>
+            couldn't rely on openclaw, so i'm making my own claw.
+            using <span class="bright">langgraph</span> and
+            <span class="bright">deepagent</span> by langchain to build a personal AI assistant
+            that i actually trust. i selfhost my own models, currently trying to squeeze
+            the best out of <span class="bright">qwen3.5:9b</span>,
+            which is a fun challenge with a model that small.
+        </p>
+        <p>
+            still figuring out where exactly i fit in this industry.
+            trying to break into <span class="bright">devops</span> properly.
+            i've done the work, just need someone to give me the shot.
+        </p>
 
-    <p>
-        <strong>Core Stack:</strong> Anything that's required
-    </p>
-    
-    <p>
-        <strong>Currently Exploring:</strong> Rust for systems programming and the nuances of distributed system design. I'm always driven by a curiosity for how things work at a fundamental level.
-    </p>
+        <hr class="sep">
 
-    <p>
-        Find my work on <a href="https://github.com/rukh-debug">GitHub</a>, connect with me on <a href="https://matrix.to/#/@rukh-:matrix.org">@rukh-:matrix.org</a>, or read my thoughts on <a href="https://blog.rubenk.dev">my blog</a>.
-    </p>
+        <div class="section-label">what i work with</div>
+        <div class="stack-grid">
+            <span class="stack-key">daily drivers</span>
+            <span class="stack-val">typescript, python, bash</span>
+
+            <span class="stack-key">infra</span>
+            <span class="stack-val">docker, github actions, proxmox, traefik, wireguard</span>
+
+            <span class="stack-key">cloud</span>
+            <span class="stack-val">aws extensively, some hands-on with azure</span>
+
+            <span class="stack-key">linux</span>
+            <span class="stack-val">nixos daily, managed debian in prod, I host my own dns</span>
+
+            <span class="stack-key">security</span>
+            <span class="stack-val">always in the back of my mind</span>
+        </div>
+        <p class="note" style="margin-top: 1rem;">
+            i've written rust, go, kotlin, and others. i understand how they work.
+            i just don't reach for them when i need something built fast.
+        </p>
+
+        <hr class="sep">
+
+        <div class="section-label">things i've built</div>
+        <ul class="projects">
+            <li>
+                <a href="https://github.com/rukh-debug/whatsclaw" class="project-name">whatsclaw</a>
+                <div class="project-desc">my personal AI assistant. couldn't trust someone else's claw, so i'm building my own.</div>
+                <div class="project-meta">typescript · langgraph · deepagent · active</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/eReKon" class="project-name">eReKon</a>
+                <div class="project-desc">web recon tool that got some attention</div>
+                <div class="project-meta">javascript · 61 stars</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/rustypaste-mcp" class="project-name">rustypaste-mcp</a>
+                <div class="project-desc">mcp server for rustypaste, connecting AI tools to my selfhosted stack</div>
+                <div class="project-meta">typescript</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/server" class="project-name">server</a>
+                <div class="project-desc">docker-compose collection for everything i selfhost</div>
+                <div class="project-meta">docker · proxmox · traefik</div>
+                <div class="project-private">private for now, will open source when ready</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/noctalia-unofficial-plugins" class="project-name">noctalia-plugins</a>
+                <div class="project-desc">plugins for the shell i actually use daily</div>
+                <div class="project-meta">qml · 5 stars</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/hy-pAI" class="project-name">hy-pAI</a>
+                <div class="project-desc">voice-controlled tiling wm via AI, because why not</div>
+                <div class="project-meta">typescript</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/nixos-config" class="project-name">nixos-config</a>
+                <div class="project-desc">my actual system config. declarative everything.</div>
+                <div class="project-meta">nix</div>
+            </li>
+            <li>
+                <a href="https://github.com/rukh-debug/quickmark" class="project-name">quickmark</a>
+                <div class="project-desc">bookmark manager that's just a single html file. no cloud, no account.</div>
+                <div class="project-meta">typescript</div>
+            </li>
+        </ul>
+        <p class="private-note">
+            some repos are private at the moment for security reasons.
+            they'll be open sourced when the code and time is right.
+        </p>
+
+        <hr class="sep">
+
+        <div class="section-label">background</div>
+        <p>
+            started in <span class="bright">cybersecurity</span>. built vulnerability scanners
+            and managed deployments for banking clients at a security startup.
+            moved into fullstack, set up ci/cd pipelines and cloud infra at a real estate startup.
+            did a devops stint containerizing .net apps on eks.
+        </p>
+        <p>
+            now in canada. running a homelab on proxmox, selfhosting everything
+            from AI models to media servers behind tailscale and traefik.
+            i automate the hell out of everything because life's too short to do things twice.
+        </p>
+
+        <hr class="sep">
+
+        <div class="section-label">aside</div>
+        <p>
+            i use a tiling window manager (<a href="https://github.com/mangowm/mango">mangowc</a> + <a href="https://github.com/noctalia-dev/noctalia-shell">noctalia</a>)
+            because i like my screen organized the way my brain works.
+            i make AI art with <span class="bright">z-image-turbo</span> when i'm not working.
+            the AI space is moving dramatically fast. some people find that overwhelming,
+            i'm optimistic about where it's all heading. always following what's next.
+        </p>
+
+        <hr class="sep">
+
+        <div class="links">
+            <a href="https://github.com/rukh-debug">github</a>
+            <a href="https://blog.rubenk.dev">blog</a>
+            <a href="https://matrix.to/#/@rukh-:matrix.org">matrix</a>
+            <a class="email-catch-all" id="catch-all-email" href="mailto:hello@rubenk.dev"><span class="email-dynamic" id="email-name">hello</span><span class="email-static">@rubenk.dev</span></a>
+        </div>
+
     </div>
-    <div id="custom-cursor"></div>
+
+    <div id="cursor"></div>
 
     <script>
-        const cursor = document.getElementById('custom-cursor');
-        const links = document.querySelectorAll('a');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
+        // custom cursor
+        const c = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            c.style.left = e.clientX + 'px';
+            c.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, .email-catch-all').forEach(a => {
+            a.addEventListener('mouseenter', () => c.classList.add('hover'));
+            a.addEventListener('mouseleave', () => c.classList.remove('hover'));
         });
 
-        document.addEventListener('mousedown', () => {
-            cursor.classList.add('clicking');
-        });
+        // catch-all email animation
+        (function() {
+            const words = [
+                'hello',
+                'yourname',
+                'hire-me',
+                'john',
+                'literally-anything',
+                'xyz',
+                'cool-company',
+                'whatever-you-want',
+                'recruiter',
+                'hey-ruben',
+                'anything-works',
+                'your-cats-name',
+                'just-say-hi',
+            ];
 
-        document.addEventListener('mouseup', () => {
-            cursor.classList.remove('clicking');
-        });
+            const el = document.getElementById('email-name');
+            const link = document.getElementById('catch-all-email');
+            let wordIndex = 0;
+            let charIndex = words[0].length;
+            let deleting = false;
+            let pause = 0;
 
-        links.forEach((link) => {
-            link.addEventListener('mouseenter', () => {
-                cursor.classList.add('hovering');
-            });
-            link.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hovering');
-            });
-        });
+            function updateHref() {
+                link.href = 'mailto:' + el.textContent + '@rubenk.dev';
+            }
+
+            function tick() {
+                if (pause > 0) {
+                    pause--;
+                    setTimeout(tick, 60);
+                    return;
+                }
+
+                const word = words[wordIndex];
+
+                if (!deleting) {
+                    charIndex++;
+                    el.textContent = word.slice(0, charIndex);
+                    updateHref();
+
+                    if (charIndex >= word.length) {
+                        deleting = true;
+                        pause = 30; // ~1.8s pause before deleting
+                        setTimeout(tick, 60);
+                        return;
+                    }
+                    setTimeout(tick, 70 + Math.random() * 50);
+                } else {
+                    charIndex--;
+                    el.textContent = word.slice(0, charIndex);
+                    updateHref();
+
+                    if (charIndex <= 0) {
+                        deleting = false;
+                        wordIndex = (wordIndex + 1) % words.length;
+                        pause = 8; // ~0.5s pause before typing next
+                        setTimeout(tick, 60);
+                        return;
+                    }
+                    setTimeout(tick, 40 + Math.random() * 30);
+                }
+            }
+
+            // start after a short delay
+            setTimeout(() => {
+                deleting = true;
+                pause = 25;
+                tick();
+            }, 2000);
+        })();
     </script>
 </body>
 </html>
