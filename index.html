@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rukh</title>
-    <meta name="description" content="Ruben K. DevOps, automation, and building things that work.">
+    <meta name="description" content="Ruben K. Cybersecurity, AI agents and harnesses, homelabs, and automating the rest.">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -230,17 +230,20 @@
 
         <div class="section-label">now</div>
         <p>
-            couldn't rely on openclaw, so i'm making my own claw.
-            using <span class="bright">langgraph</span> and
-            <span class="bright">deepagent</span> by langchain to build a personal AI assistant
-            that i actually trust. i selfhost my own models, currently trying to squeeze
-            the best out of <span class="bright">qwen3.5:9b</span>,
-            which is a fun challenge with a model that small.
+            these days i'm deep in three things: <span class="bright">cybersecurity</span>,
+            <span class="bright">AI agents and the harnesses</span> that keep them useful,
+            and my <span class="bright">homelab</span>.
         </p>
         <p>
-            still figuring out where exactly i fit in this industry.
-            trying to break into <span class="bright">devops</span> properly.
-            i've done the work, just need someone to give me the shot.
+            latest build is a public ssh/web <span class="bright">honeypot</span> on a vps.
+            bots find it within minutes, try their worst passwords, and a live dashboard
+            shows every login attempt, command and malware download as it happens.
+        </p>
+        <p>
+            on the AI side, i selfhost my own models and build agent harnesses with
+            <span class="bright">langgraph</span> and <span class="bright">deepagents</span>.
+            currently squeezing the best out of <span class="bright">qwen3.5:9b</span>,
+            which is a fun challenge with a model that small.
         </p>
 
         <hr class="sep">
@@ -260,7 +263,7 @@
             <span class="stack-val">nixos daily, managed debian in prod, I host my own dns</span>
 
             <span class="stack-key">security</span>
-            <span class="stack-val">always in the back of my mind</span>
+            <span class="stack-val">honeypots, hardened containers, started out building vuln scanners</span>
         </div>
         <p class="note" style="margin-top: 1rem;">
             i've written rust, go, kotlin, and others. i understand how they work.
@@ -272,9 +275,10 @@
         <div class="section-label">things i've built</div>
         <ul class="projects">
             <li>
-                <a href="https://github.com/rukh-debug/whatsclaw" class="project-name">whatsclaw</a>
-                <div class="project-desc">my personal AI assistant. couldn't trust someone else's claw, so i'm building my own.</div>
-                <div class="project-meta">typescript · langgraph · deepagent · active</div>
+                <a href="https://51-222-158-58.sslip.io" class="project-name">who is knocking</a>
+                <div class="project-desc">public ssh/web honeypot with a live attacker dashboard. fake shell, fake wordpress, real bots.</div>
+                <div class="project-meta">cowrie · docker · caddy · python · live</div>
+                <div class="project-private">code private for now, the dashboard is public</div>
             </li>
             <li>
                 <a href="https://github.com/rukh-debug/eReKon" class="project-name">eReKon</a>
